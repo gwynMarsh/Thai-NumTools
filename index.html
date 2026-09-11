@@ -282,9 +282,10 @@
             gap: 0.4rem;
         }
 
+        /* Added thin 1px border matching the symbol chips */
         .chip-btn {
             background-color: var(--primary-light);
-            border: none;
+            border: 1px solid var(--border-color);
             color: var(--primary);
             padding: 0.6rem 0;
             font-weight: 700;
@@ -386,19 +387,19 @@
                 <button onclick="appendThai('๙')" class="chip-btn">๙ <span class="chip-sub">9</span></button>
                 <button onclick="appendThai('๐')" class="chip-btn">๐ <span class="chip-sub">0</span></button>
 
-                <!-- Punctuation & Decimals -->
-                <button onclick="appendThai('.')" class="chip-btn symbol-btn">. <span class="chip-sub">Dot</span></button>
-                <button onclick="appendThai(',')" class="chip-btn symbol-btn">, <span class="chip-sub">Comma</span></button>
-                <button onclick="appendThai('(')" class="chip-btn symbol-btn">( <span class="chip-sub">(</span></button>
-                <button onclick="appendThai(')')" class="chip-btn symbol-btn">) <span class="chip-sub">)</span></button>
-                <button onclick="appendThai('%')" class="chip-btn symbol-btn">% <span class="chip-sub">%</span></button>
+                <!-- Punctuation & Decimals (Single Symbol Labels) -->
+                <button onclick="appendThai('.')" class="chip-btn symbol-btn">.</button>
+                <button onclick="appendThai(',')" class="chip-btn symbol-btn">,</button>
+                <button onclick="appendThai('(')" class="chip-btn symbol-btn">(</button>
+                <button onclick="appendThai(')')" class="chip-btn symbol-btn">)</button>
+                <button onclick="appendThai('%')" class="chip-btn symbol-btn">%</button>
 
-                <!-- Mathematical Operations -->
-                <button onclick="appendThai('+')" class="chip-btn symbol-btn">+ <span class="chip-sub">+</span></button>
-                <button onclick="appendThai('-')" class="chip-btn symbol-btn">- <span class="chip-sub">-</span></button>
-                <button onclick="appendThai('*')" class="chip-btn symbol-btn">* <span class="chip-sub">×</span></button>
-                <button onclick="appendThai('/')" class="chip-btn symbol-btn">/ <span class="chip-sub">÷</span></button>
-                <button onclick="appendThai('=')" class="chip-btn symbol-btn">= <span class="chip-sub">=</span></button>
+                <!-- Mathematical Operations (Single Symbol Labels) -->
+                <button onclick="appendThai('+')" class="chip-btn symbol-btn">+</button>
+                <button onclick="appendThai('-')" class="chip-btn symbol-btn">-</button>
+                <button onclick="appendThai('*')" class="chip-btn symbol-btn">*</button>
+                <button onclick="appendThai('/')" class="chip-btn symbol-btn">/</button>
+                <button onclick="appendThai('=')" class="chip-btn symbol-btn">=</button>
             </div>
 
             <div style="margin-top: 1rem;">
@@ -413,7 +414,6 @@
         <!-- Section 2: Arabic Input to Thai Numerals -->
         <div class="card">
             <label for="arabicInput">Arabic Expression Input</label>
-            <!-- Changed input type from 'number' to 'text' to support symbols -->
             <input type="text" id="arabicInput" placeholder="e.g., (1,250.50 + 50%) * 2 = ?" oninput="convertArabicToThai()">
 
             <div style="margin-top: 1rem;">
@@ -483,7 +483,6 @@
                 const text = await navigator.clipboard.readText();
                 if (!text) return;
 
-                // Regex matches Thai digits along with supported punctuation & operators
                 const validChars = text.match(/[๐-๙.,()+\-*\/=%?]/g);
                 if (validChars && validChars.length > 0) {
                     currentThaiChips = currentThaiChips.concat(validChars);
