@@ -13,14 +13,13 @@
            1. COLOR SCHEME & NATIVE DARK MODE VARIABLES
            ========================================================================== */
         :root {
-            /* Light Mode Palette */
             --bg-color: #f8fafc;
             --card-bg: #ffffff;
             --text-main: #1e293b;
             --text-muted: #64748b;
             --border-color: #cbd5e1;
             --input-bg: #f1f5f9;
-            --primary: #0284c7;           /* Sky Blue theme for Thai Converter */
+            --primary: #0284c7;           /* Sky Blue theme */
             --primary-light: #e0f2fe;
             --accent-hover: #bae6fd;
             --danger: #ef4444;
@@ -31,7 +30,6 @@
         }
 
         .dark {
-            /* Dark Mode Palette */
             --bg-color: #0f172a;
             --card-bg: #1e293b;
             --text-main: #f1f5f9;
@@ -60,7 +58,6 @@
         body {
             background-color: var(--bg-color);
             color: var(--text-main);
-            /* Native OS System Typography Stack covering iOS/macOS (Thonburi), Windows (Leelawadee UI), & Android */
             font-family: -apple-system, BlinkMacSystemFont, "Thonburi", "Leelawadee UI", "Segoe UI", Roboto, sans-serif;
             min-height: 100vh;
             display: flex;
@@ -153,7 +150,7 @@
             margin-bottom: 0.5rem;
         }
 
-        input[type="number"] {
+        input[type="text"] {
             width: 100%;
             font-size: 1.5rem;
             font-weight: 600;
@@ -166,7 +163,7 @@
             transition: border-color 0.2s, box-shadow 0.2s;
         }
 
-        input[type="number"]:focus {
+        input[type="text"]:focus {
             border-color: var(--primary);
             box-shadow: 0 0 0 2px var(--primary-light);
         }
@@ -197,7 +194,6 @@
             line-height: 1.2;
         }
 
-        /* Action Buttons (Copy / Paste / Delete / Clear) */
         .action-btn {
             background-color: var(--input-bg);
             border: 1px solid var(--border-color);
@@ -280,7 +276,6 @@
             font-weight: 700;
         }
 
-        /* Thai Numpad Grid (5 columns across 2 rows) */
         .palette-grid {
             display: grid;
             grid-template-columns: repeat(5, 1fr);
@@ -291,9 +286,9 @@
             background-color: var(--primary-light);
             border: none;
             color: var(--primary);
-            padding: 0.75rem 0;
+            padding: 0.6rem 0;
             font-weight: 700;
-            font-size: clamp(1.2rem, 4vw, 1.5rem);
+            font-size: clamp(1.1rem, 3.5vw, 1.4rem);
             border-radius: 12px;
             cursor: pointer;
             transition: background-color 0.2s, transform 0.1s;
@@ -316,6 +311,17 @@
             font-weight: normal;
             opacity: 0.75;
             margin-top: 2px;
+        }
+
+        /* Distinct styling for mathematical symbol buttons */
+        .symbol-btn {
+            background-color: var(--input-bg);
+            color: var(--text-main);
+            border: 1px solid var(--border-color);
+        }
+
+        .symbol-btn:hover {
+            background-color: var(--border-color);
         }
 
         /* ==========================================================================
@@ -342,17 +348,16 @@
 
     <!-- Main Container -->
     <main>
-        
         <!-- Context Helper Banner -->
         <div class="banner">
             <h2>📖 Quick Use Cases</h2>
-            <p>Great for decoding Thai government notices, official land documents, tax records, and converting Buddhist Era years (B.E. / พ.ศ.).</p>
+            <p>Great for decoding Thai government notices, official land documents, tax records, prices, and converting Buddhist Era years (B.E. / พ.ศ.).</p>
         </div>
 
         <!-- Section 1: Thai Chips Builder to Arabic -->
         <div class="card">
             <div class="chip-display-header">
-                <label style="margin-bottom: 0;">Thai Numerals (Tap chips or paste)</label>
+                <label style="margin-bottom: 0;">Thai Numerals & Expressions</label>
                 <div class="chip-actions-group">
                     <button onclick="pasteFromClipboard()" class="action-btn">📋 Paste</button>
                     <button onclick="backspaceThai()" class="action-btn">⌫ Delete</button>
@@ -362,23 +367,40 @@
 
             <!-- Thai Chips Input Display Box -->
             <div id="chipDisplay" class="chip-container">
-                <span class="placeholder-text" id="placeholderText">Tap chips or paste Thai numbers...</span>
+                <span class="placeholder-text" id="placeholderText">Tap chips or paste Thai numbers/symbols...</span>
             </div>
 
-            <!-- Thai Numpad Chips Palette (๑ ๒ ๓ ๔ ๕ ๖ ๗ ๘ ๙ ๐) -->
+            <!-- Thai Numpad & Symbol Chips Palette -->
             <div class="palette-grid">
+                <!-- Numbers Row 1 -->
                 <button onclick="appendThai('๑')" class="chip-btn">๑ <span class="chip-sub">1</span></button>
                 <button onclick="appendThai('๒')" class="chip-btn">๒ <span class="chip-sub">2</span></button>
                 <button onclick="appendThai('๓')" class="chip-btn">๓ <span class="chip-sub">3</span></button>
                 <button onclick="appendThai('๔')" class="chip-btn">๔ <span class="chip-sub">4</span></button>
                 <button onclick="appendThai('๕')" class="chip-btn">๕ <span class="chip-sub">5</span></button>
+
+                <!-- Numbers Row 2 -->
                 <button onclick="appendThai('๖')" class="chip-btn">๖ <span class="chip-sub">6</span></button>
                 <button onclick="appendThai('๗')" class="chip-btn">๗ <span class="chip-sub">7</span></button>
                 <button onclick="appendThai('๘')" class="chip-btn">๘ <span class="chip-sub">8</span></button>
                 <button onclick="appendThai('๙')" class="chip-btn">๙ <span class="chip-sub">9</span></button>
                 <button onclick="appendThai('๐')" class="chip-btn">๐ <span class="chip-sub">0</span></button>
+
+                <!-- Punctuation & Decimals -->
+                <button onclick="appendThai('.')" class="chip-btn symbol-btn">. <span class="chip-sub">Dot</span></button>
+                <button onclick="appendThai(',')" class="chip-btn symbol-btn">, <span class="chip-sub">Comma</span></button>
+                <button onclick="appendThai('(')" class="chip-btn symbol-btn">( <span class="chip-sub">(</span></button>
+                <button onclick="appendThai(')')" class="chip-btn symbol-btn">) <span class="chip-sub">)</span></button>
+                <button onclick="appendThai('%')" class="chip-btn symbol-btn">% <span class="chip-sub">%</span></button>
+
+                <!-- Mathematical Operations -->
+                <button onclick="appendThai('+')" class="chip-btn symbol-btn">+ <span class="chip-sub">+</span></button>
+                <button onclick="appendThai('-')" class="chip-btn symbol-btn">- <span class="chip-sub">-</span></button>
+                <button onclick="appendThai('*')" class="chip-btn symbol-btn">* <span class="chip-sub">×</span></button>
+                <button onclick="appendThai('/')" class="chip-btn symbol-btn">/ <span class="chip-sub">÷</span></button>
+                <button onclick="appendThai('=')" class="chip-btn symbol-btn">= <span class="chip-sub">=</span></button>
             </div>
-            
+
             <div style="margin-top: 1rem;">
                 <span class="result-label">Arabic Value:</span>
                 <div class="result-row">
@@ -390,9 +412,10 @@
 
         <!-- Section 2: Arabic Input to Thai Numerals -->
         <div class="card">
-            <label for="arabicInput">Arabic Number (Direct Numpad Input)</label>
-            <input type="number" id="arabicInput" placeholder="e.g., 2569" oninput="convertArabicToThai()">
-            
+            <label for="arabicInput">Arabic Expression Input</label>
+            <!-- Changed input type from 'number' to 'text' to support symbols -->
+            <input type="text" id="arabicInput" placeholder="e.g., (1,250.50 + 50%) * 2 = ?" oninput="convertArabicToThai()">
+
             <div style="margin-top: 1rem;">
                 <span class="result-label">Thai Numeral Result:</span>
                 <div class="result-row">
@@ -401,7 +424,6 @@
                 </div>
             </div>
         </div>
-
     </main>
 
     <!-- Footer -->
@@ -420,19 +442,29 @@
             localStorage.setItem('theme', isDark ? 'dark' : 'light');
         }
 
-        // Initialize theme based on preference or saved state
         if (localStorage.getItem('theme') === 'dark' || (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
             document.documentElement.classList.add('dark');
             document.getElementById('themeIcon').textContent = '☀️';
         }
 
-        // --- Conversion Dictionaries ---
-        const thaiToArabicMap = { '๐': '0', '๑': '1', '๒': '2', '๓': '3', '๔': '4', '๕': '5', '๖': '6', '๗': '7', '๘': '8', '๙': '9' };
-        const arabicToThaiMap = { '0': '๐', '1': '๑', '2': '๒', '3': '๓', '4': '๔', '5': '๕', '6': '๖', '7': '๗', '8': '๘', '9': '๙' };
+        // --- Extended Conversion Dictionaries ---
+        const thaiToArabicMap = {
+            '๐': '0', '๑': '1', '๒': '2', '๓': '3', '๔': '4',
+            '๕': '5', '๖': '6', '๗': '7', '๘': '8', '๙': '9',
+            '.': '.', ',': ',', '(': '(', ')': ')',
+            '+': '+', '-': '-', '*': '*', '/': '/', '=': '=', '%': '%', '?': '?'
+        };
+
+        const arabicToThaiMap = {
+            '0': '๐', '1': '๑', '2': '๒', '3': '๓', '4': '๔',
+            '5': '๕', '6': '๖', '7': '๗', '8': '๘', '9': '๙',
+            '.': '.', ',': ',', '(': '(', ')': ')',
+            '+': '+', '-': '-', '*': '*', '/': '/', '=': '=', '%': '%', '?': '?'
+        };
 
         let currentThaiChips = [];
 
-        // --- Clipboard Operations (Copy & Paste) ---
+        // --- Clipboard Operations ---
         function copyToClipboard(elementId, btnElement) {
             const textToCopy = document.getElementById(elementId).textContent;
             if (!textToCopy || textToCopy === "---") return;
@@ -451,13 +483,13 @@
                 const text = await navigator.clipboard.readText();
                 if (!text) return;
 
-                // Extract any valid Thai digits found in the pasted text
-                const thaiDigits = text.match(/[๐-๙]/g);
-                if (thaiDigits && thaiDigits.length > 0) {
-                    currentThaiChips = currentThaiChips.concat(thaiDigits);
+                // Regex matches Thai digits along with supported punctuation & operators
+                const validChars = text.match(/[๐-๙.,()+\-*\/=%?]/g);
+                if (validChars && validChars.length > 0) {
+                    currentThaiChips = currentThaiChips.concat(validChars);
                     updateThaiChipDisplay();
                 } else {
-                    alert("No Thai numerals found in clipboard!");
+                    alert("No supported Thai numerals or symbols found in clipboard!");
                 }
             } catch (err) {
                 alert("Clipboard access permission required to paste.");
@@ -468,7 +500,7 @@
         function convertArabicToThai() {
             const val = document.getElementById('arabicInput').value;
             const resEl = document.getElementById('thaiResult');
-            
+
             if (!val) {
                 resEl.textContent = "---";
                 return;
@@ -499,9 +531,9 @@
         function updateThaiChipDisplay() {
             const container = document.getElementById('chipDisplay');
             container.innerHTML = '';
-            
+
             if (currentThaiChips.length === 0) {
-                container.innerHTML = '<span class="placeholder-text" id="placeholderText">Tap chips or paste Thai numbers...</span>';
+                container.innerHTML = '<span class="placeholder-text" id="placeholderText">Tap chips or paste Thai numbers/symbols...</span>';
                 document.getElementById('arabicResult').textContent = '0';
                 return;
             }
@@ -514,17 +546,17 @@
                 container.appendChild(chip);
             });
 
-            // Convert array of Thai chips to Arabic number sequence
+            // Convert array of Thai chips to Arabic representation
             let arabicString = "";
             currentThaiChips.forEach((char) => {
-                arabicString += thaiToArabicMap[char] || '';
+                arabicString += thaiToArabicMap[char] !== undefined ? thaiToArabicMap[char] : char;
             });
 
             document.getElementById('arabicResult').textContent = arabicString || '0';
         }
 
-        // Run default state setup on load (Set default B.E. year example: 2569 -> ๒๕๖๙)
-        document.getElementById('arabicInput').value = 2569;
+        // Run default state setup on load
+        document.getElementById('arabicInput').value = "2,569.50 + 10%";
         convertArabicToThai();
     </script>
 </body>
