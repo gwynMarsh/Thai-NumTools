@@ -284,22 +284,27 @@
             gap: 0.4rem;
         }
 
-        .chip-btn {
-            background-color: var(--primary-light);
-            border: 1px solid var(--border-color);
-            color: var(--primary);
-            font-weight: 700;
-            font-size: clamp(1.1rem, 3.5vw, 1.4rem);
-            border-radius: 999px;
-            aspect-ratio: 1 / 1; /* Forces square bounds to render perfect circles */
-            padding: 0;
-            cursor: pointer;
-            transition: background-color 0.2s, transform 0.1s;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-        }
+  .chip-btn {
+    background-color: var(--primary-light);
+    border: 1px solid var(--border-color);
+    color: var(--primary);
+    font-weight: 700;
+    font-size: clamp(0.9rem, 2.8vw, 1.2rem); /* Slightly reduced font size to fit smaller circle */
+    border-radius: 999px;
+    
+    /* Circle Size Controls */
+    width: 75%;              /* Shrinks circle width relative to its grid cell */
+    aspect-ratio: 1 / 1;     /* Maintains perfect circular ratio */
+    margin: 0 auto;          /* Keeps circle centered inside grid cell */
+    padding: 0;
+
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.1s;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
 
         .chip-btn:hover {
             background-color: var(--accent-hover);
