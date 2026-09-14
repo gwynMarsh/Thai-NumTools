@@ -505,88 +505,94 @@
 
         // --- EXCEL BAHTTEXT ENGINE ---
         function bahtText(numInput) {
-            if (numInput === null || numInput === undefined || numInput === "") return "---";
+    if (numInput === null || numInput === undefined || numInput === "") return "---";
 
-            // Convert Thai digits in input to Arabic digits first
-            let cleanInput = String(numInput).replace(/[๐-๙]/g, char => thaiToArabicMap[char] || char);
-            // Remove commas and white space
-            cleanInput = cleanInput.replace(/,/g, "").trim();
+    // Convert Thai digits in input to Arabic digits first
+    let cleanInput = String(numInput).replace(/[๐-๙]/g, char => thaiToArabicMap[char] || char);
+    // Remove commas and white space
+    cleanInput = cleanInput.replace(/,/g, "").trim();
 
-            const num = parseFloat(cleanInput);
-            if (isNaN(num)) return "---";
+    const num = parseFloat(cleanInput);
+    if (isNaN(num)) return "---";
 
-            // Handle negative numbers
-            let prefix = "";
-            let absNum = num;
-            if (num < 0) {
-                prefix = "ลบ";
-                absNum = Math.abs(num);
-            }
+    // Handle negative numbers
+    let prefix = "";
+    let absNum = num;
+    if (num < 0) {
+        prefix = "ลบ";
+        absNum = Math.abs(num);
+    }
 
-            // Round to 2 decimal places like Baht / Satang standard
-            const rounded = (Math.round(absNum * 100) / 100).toFixed(2);
-            const [integerPart, decimalPart] = rounded.split(".");
+    // Round to 2 decimal places like Baht / Satang standard
+    const rounded = (Math.round(absNum * 100) / 100).toFixed(2);
+    const [integerPart, decimalPart] = rounded.split(".");
 
-            const numbers = ["", "หนึ่ง", "สอง", "สาม", "สี่", "ห้า", "หก", "เจ็ด", "แปด", "เก้า"];
-            const positions = ["", "สิบ", "ร้อย", "พัน", "หมื่น", "แสน", "ล้าน"];
+    const numbers = ["", "หนึ่ง", "สอง", "สาม", "สี่", "ห้า", "หก", "เจ็ด", "แปด", "เก้า"];
+    const positions = ["", "สิบ", "ร้อย", "พัน", "หมื่น", "แสน", "ล้าน"];
 
-            function convertSegment(strNum) {
-                let result = "";
-                const len = strNum.length;
-                for (let i = 0; i < len; i++) {
-                    const digit = parseInt(strNum.charAt(i), 10);
-                    const pos = len - i - 1;
+    function convertSegment(strNum) {
+        let result = "";
+        const len = strNum.length;
 
-                    if (digit !== 0) {
-                        if (pos === 1 && digit === 1) {
-                            result += "";
-                        } else if (pos === 1 && digit === 2) {
-                            result += "ยี่";
-                        } else if (pos === 0 && digit === 1 && len > 1) {
-                            // If the last digit in a segment is 1 and length > 1, use 'เอ็ด'
-                            result += "เอ็ด";
-                        } else {
-                            result += numbers[digit];
-                        }
-                        result += positions[pos];
-                    }
+        // Check if there is any non-zero digit preceding the current digit in this segment
+        let hasPrecedingDigit = false;
+
+        for (let i = 0; i < len; i++) {
+            const digit = parseInt(strNum.charAt(i), 10);
+            const pos = len - i - 1;
+
+            if (digit !== 0) {
+                if (pos === 1 && digit === 1) {
+                    result += "";
+                } else if (pos === 1 && digit === 2) {
+                    result += "ยี่";
+                } else if (pos === 0 && digit === 1 && hasPrecedingDigit) {
+                    // Only use 'เอ็ด' if there is a preceding non-zero digit in the segment (e.g. 11 -> สิบเอ็ด, 21 -> ยี่สิบเอ็ด)
+                    // If no preceding digit (e.g. 01 in Satang or standalone 1), use 'หนึ่ง'
+                    result += "เอ็ด";
+                } else {
+                    result += numbers[digit];
                 }
-                return result;
-            }
-
-            function convertInteger(strNum) {
-                if (strNum === "0" || strNum === "") return "ศูนย์";
-                let result = "";
-                let remaining = strNum;
-
-                // Process in 6-digit chunks (ล้าน)
-                while (remaining.length > 6) {
-                    const chunk = remaining.substring(remaining.length - 6);
-                    remaining = remaining.substring(0, remaining.length - 6);
-                    result = convertSegment(chunk) + result;
-                    if (remaining.length > 0) {
-                        result = "ล้าน" + result;
-                    }
-                }
-                result = convertSegment(remaining) + result;
-                return result;
-            }
-
-            let bahtResult = convertInteger(integerPart);
-            let satangResult = "";
-
-            if (decimalPart && decimalPart !== "00") {
-                satangResult = convertSegment(decimalPart) + "สตางค์";
-            }
-
-            if (bahtResult === "ศูนย์" && satangResult !== "") {
-                return prefix + satangResult;
-            } else if (satangResult === "") {
-                return prefix + bahtResult + "บาทถ้วน";
-            } else {
-                return prefix + bahtResult + "บาท" + satangResult;
+                result += positions[pos];
+                hasPrecedingDigit = true;
             }
         }
+        return result;
+    }
+
+    function convertInteger(strNum) {
+        if (strNum === "0" || strNum === "") return "ศูนย์";
+        let result = "";
+        let remaining = strNum;
+
+        // Process in 6-digit chunks (ล้าน)
+        while (remaining.length > 6) {
+            const chunk = remaining.substring(remaining.length - 6);
+            remaining = remaining.substring(0, remaining.length - 6);
+            result = convertSegment(chunk) + result;
+            if (remaining.length > 0) {
+                result = "ล้าน" + result;
+            }
+        }
+        result = convertSegment(remaining) + result;
+        return result;
+    }
+
+    let bahtResult = convertInteger(integerPart);
+    let satangResult = "";
+
+    if (decimalPart && decimalPart !== "00") {
+        satangResult = convertSegment(decimalPart) + "สตางค์";
+    }
+
+    if (bahtResult === "ศูนย์" && satangResult !== "") {
+        return prefix + satangResult;
+    } else if (satangResult === "") {
+        return prefix + bahtResult + "บาทถ้วน";
+    } else {
+        return prefix + bahtResult + "บาท" + satangResult;
+    }
+}
 
         function convertBahtText() {
             const inputVal = document.getElementById('bahtInput').value;
