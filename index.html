@@ -323,6 +323,51 @@
             background-color: var(--border-color);
         }
 
+        /* Segmented Control Tab Navigation */
+        .tab-container {
+            display: flex;
+            background-color: var(--input-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 0.25rem;
+            gap: 0.25rem;
+            margin-bottom: 1rem;
+        }
+
+        .tab-btn {
+            flex: 1;
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            padding: 0.6rem 0.5rem;
+            font-size: 0.85rem;
+            font-weight: 600;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-align: center;
+            white-space: nowrap;
+        }
+
+        .tab-btn:hover {
+            color: var(--text-main);
+        }
+
+        .tab-btn.active {
+            background-color: var(--card-bg);
+            color: var(--primary);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Hide inactive tab contents */
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
         /* ==========================================================================
            6. FOOTER STYLES
            ========================================================================== */
@@ -333,52 +378,6 @@
             font-size: 0.75rem;
             color: var(--text-muted);
         }
-
-        /* Segmented Control Tab Navigation */
-.tab-container {
-    display: flex;
-    background-color: var(--input-bg);
-    border: 1px solid var(--border-color);
-    border-radius: 16px;
-    padding: 0.25rem;
-    gap: 0.25rem;
-    margin-bottom: 1rem;
-}
-
-.tab-btn {
-    flex: 1;
-    background: none;
-    border: none;
-    color: var(--text-muted);
-    padding: 0.6rem 0.5rem;
-    font-size: 0.85rem;
-    font-weight: 600;
-    border-radius: 12px;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    text-align: center;
-    white-space: nowrap;
-}
-
-.tab-btn:hover {
-    color: var(--text-main);
-}
-
-.tab-btn.active {
-    background-color: var(--card-bg);
-    color: var(--primary);
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-}
-
-/* Hide inactive tab contents */
-.tab-content {
-    display: none;
-}
-
-.tab-content.active {
-    display: block;
-}
-        
     </style>
 </head>
 <body>
@@ -400,109 +399,94 @@
         </div>
 
         <!-- Tab Navigation Bar -->
-<nav class="tab-container">
-    <button class="tab-btn active" onclick="switchTab('bahtTab', this)">฿ BahtText</button>
-    <button class="tab-btn" onclick="switchTab('thaiToArabicTab', this)">๑ $\rightarrow$ 1 Thai</button>
-    <button class="tab-btn" onclick="switchTab('arabicToThaiTab', this)">1 $\rightarrow$ ๑ Arabic</button>
-</nav>
+        <nav class="tab-container">
+            <button class="tab-btn active" onclick="switchTab('bahtTab', this)">฿ BahtText</button>
+            <button class="tab-btn" onclick="switchTab('thaiToArabicTab', this)">๑ → 1 Thai</button>
+            <button class="tab-btn" onclick="switchTab('arabicToThaiTab', this)">1 → ๑ Arabic</button>
+        </nav>
 
-<!-- Tab 1: BahtText -->
-<div id="bahtTab" class="tab-content active">
-    <div class="card">
-        <!-- Your BahtText Converter Content -->
-    </div>
-</div>
+        <!-- Tab 1: BahtText -->
+        <div id="bahtTab" class="tab-content active">
+            <div class="card">
+                <label for="bahtInput">Thai Baht Amount (Excel THAIBAHT / BAHTTEXT)</label>
+                <input type="text" id="bahtInput" placeholder="e.g., 1250.75 or ๒๕๖๐.๕๐" oninput="convertBahtText()">
 
-<!-- Tab 2: Thai to Arabic -->
-<div id="thaiToArabicTab" class="tab-content">
-    <div class="card">
-        <!-- Your Thai Chips Builder Content -->
-    </div>
-</div>
-
-<!-- Tab 3: Arabic to Thai -->
-<div id="arabicToThaiTab" class="tab-content">
-    <div class="card">
-        <!-- Your Arabic to Thai Content -->
-    </div>
-</div>
-
-        <!-- Section 1: BahtText Currency Converter -->
-        <div class="card">
-            <label for="bahtInput">Thai Baht Amount (Excel THAIBAHT / BAHTTEXT)</label>
-            <input type="text" id="bahtInput" placeholder="e.g., 1250.75 or ๒๕๖๐.๕๐" oninput="convertBahtText()">
-
-            <div style="margin-top: 1rem;">
-                <span class="result-label">Thai Baht Text (อ่านเป็นภาษาไทย):</span>
-                <div class="result-row">
-                    <div id="bahtResult" class="result-value">หนึ่งพันสองร้อยห้าสิบบาทเจ็ดสิบห้าสตางค์</div>
-                    <button onclick="copyToClipboard('bahtResult', this)" class="action-btn">📋 Copy</button>
+                <div style="margin-top: 1rem;">
+                    <span class="result-label">Thai Baht Text (อ่านเป็นภาษาไทย):</span>
+                    <div class="result-row">
+                        <div id="bahtResult" class="result-value">หนึ่งพันสองร้อยห้าสิบบาทเจ็ดสิบห้าสตางค์</div>
+                        <button onclick="copyToClipboard('bahtResult', this)" class="action-btn">📋 Copy</button>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <!-- Section 2: Thai Chips Builder to Arabic -->
-        <div class="card">
-            <div class="chip-display-header">
-                <label style="margin-bottom: 0;">Thai Numerals & Expressions</label>
-                <div class="chip-actions-group">
-                    <button onclick="pasteFromClipboard()" class="action-btn">📋 Paste</button>
-                    <button onclick="backspaceThai()" class="action-btn">⌫ Delete</button>
-                    <button onclick="clearChips()" class="clear-btn">Clear</button>
+        <!-- Tab 2: Thai to Arabic -->
+        <div id="thaiToArabicTab" class="tab-content">
+            <div class="card">
+                <div class="chip-display-header">
+                    <label style="margin-bottom: 0;">Thai Numerals & Expressions</label>
+                    <div class="chip-actions-group">
+                        <button onclick="pasteFromClipboard()" class="action-btn">📋 Paste</button>
+                        <button onclick="backspaceThai()" class="action-btn">⌫ Delete</button>
+                        <button onclick="clearChips()" class="clear-btn">Clear</button>
+                    </div>
                 </div>
-            </div>
 
-            <!-- Thai Chips Input Display Box -->
-            <div id="chipDisplay" class="chip-container">
-                <span class="placeholder-text" id="placeholderText">Tap chips or paste Thai numbers/symbols...</span>
-            </div>
+                <!-- Thai Chips Input Display Box -->
+                <div id="chipDisplay" class="chip-container">
+                    <span class="placeholder-text" id="placeholderText">Tap chips or paste Thai numbers/symbols...</span>
+                </div>
 
-            <!-- Thai Numpad & Symbol Chips Palette -->
-            <div class="palette-grid">
-                <button onclick="appendThai('๑')" class="chip-btn">๑ <span class="chip-sub">1</span></button>
-                <button onclick="appendThai('๒')" class="chip-btn">๒ <span class="chip-sub">2</span></button>
-                <button onclick="appendThai('๓')" class="chip-btn">๓ <span class="chip-sub">3</span></button>
-                <button onclick="appendThai('๔')" class="chip-btn">๔ <span class="chip-sub">4</span></button>
-                <button onclick="appendThai('๕')" class="chip-btn">๕ <span class="chip-sub">5</span></button>
+                <!-- Thai Numpad & Symbol Chips Palette -->
+                <div class="palette-grid">
+                    <button onclick="appendThai('๑')" class="chip-btn">๑ <span class="chip-sub">1</span></button>
+                    <button onclick="appendThai('๒')" class="chip-btn">๒ <span class="chip-sub">2</span></button>
+                    <button onclick="appendThai('๓')" class="chip-btn">๓ <span class="chip-sub">3</span></button>
+                    <button onclick="appendThai('๔')" class="chip-btn">๔ <span class="chip-sub">4</span></button>
+                    <button onclick="appendThai('๕')" class="chip-btn">๕ <span class="chip-sub">5</span></button>
 
-                <button onclick="appendThai('๖')" class="chip-btn">๖ <span class="chip-sub">6</span></button>
-                <button onclick="appendThai('๗')" class="chip-btn">๗ <span class="chip-sub">7</span></button>
-                <button onclick="appendThai('๘')" class="chip-btn">๘ <span class="chip-sub">8</span></button>
-                <button onclick="appendThai('๙')" class="chip-btn">๙ <span class="chip-sub">9</span></button>
-                <button onclick="appendThai('๐')" class="chip-btn">๐ <span class="chip-sub">0</span></button>
+                    <button onclick="appendThai('๖')" class="chip-btn">๖ <span class="chip-sub">6</span></button>
+                    <button onclick="appendThai('๗')" class="chip-btn">๗ <span class="chip-sub">7</span></button>
+                    <button onclick="appendThai('๘')" class="chip-btn">๘ <span class="chip-sub">8</span></button>
+                    <button onclick="appendThai('๙')" class="chip-btn">๙ <span class="chip-sub">9</span></button>
+                    <button onclick="appendThai('๐')" class="chip-btn">๐ <span class="chip-sub">0</span></button>
 
-                <button onclick="appendThai('.')" class="chip-btn symbol-btn">.</button>
-                <button onclick="appendThai(',')" class="chip-btn symbol-btn">,</button>
-                <button onclick="appendThai('(')" class="chip-btn symbol-btn">(</button>
-                <button onclick="appendThai(')')" class="chip-btn symbol-btn">)</button>
-                <button onclick="appendThai('%')" class="chip-btn symbol-btn">%</button>
+                    <button onclick="appendThai('.')" class="chip-btn symbol-btn">.</button>
+                    <button onclick="appendThai(',')" class="chip-btn symbol-btn">,</button>
+                    <button onclick="appendThai('(')" class="chip-btn symbol-btn">(</button>
+                    <button onclick="appendThai(')')" class="chip-btn symbol-btn">)</button>
+                    <button onclick="appendThai('%')" class="chip-btn symbol-btn">%</button>
 
-                <button onclick="appendThai('+')" class="chip-btn symbol-btn">+</button>
-                <button onclick="appendThai('-')" class="chip-btn symbol-btn">-</button>
-                <button onclick="appendThai('*')" class="chip-btn symbol-btn">*</button>
-                <button onclick="appendThai('/')" class="chip-btn symbol-btn">/</button>
-                <button onclick="appendThai('=')" class="chip-btn symbol-btn">=</button>
-            </div>
+                    <button onclick="appendThai('+')" class="chip-btn symbol-btn">+</button>
+                    <button onclick="appendThai('-')" class="chip-btn symbol-btn">-</button>
+                    <button onclick="appendThai('*')" class="chip-btn symbol-btn">*</button>
+                    <button onclick="appendThai('/')" class="chip-btn symbol-btn">/</button>
+                    <button onclick="appendThai('=')" class="chip-btn symbol-btn">=</button>
+                </div>
 
-            <div style="margin-top: 1rem;">
-                <span class="result-label">Arabic Value:</span>
-                <div class="result-row">
-                    <div id="arabicResult" class="result-value">0</div>
-                    <button onclick="copyToClipboard('arabicResult', this)" class="action-btn">📋 Copy</button>
+                <div style="margin-top: 1rem;">
+                    <span class="result-label">Arabic Value:</span>
+                    <div class="result-row">
+                        <div id="arabicResult" class="result-value">0</div>
+                        <button onclick="copyToClipboard('arabicResult', this)" class="action-btn">📋 Copy</button>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <!-- Section 3: Arabic Input to Thai Numerals -->
-        <div class="card">
-            <label for="arabicInput">Arabic Expression Input</label>
-            <input type="text" id="arabicInput" placeholder="e.g., (1,250.50 + 50%) * 2 = ?" oninput="convertArabicToThai()">
+        <!-- Tab 3: Arabic to Thai -->
+        <div id="arabicToThaiTab" class="tab-content">
+            <div class="card">
+                <label for="arabicInput">Arabic Expression Input</label>
+                <input type="text" id="arabicInput" placeholder="e.g., (1,250.50 + 50%) * 2 = ?" oninput="convertArabicToThai()">
 
-            <div style="margin-top: 1rem;">
-                <span class="result-label">Thai Numeral Result:</span>
-                <div class="result-row">
-                    <div id="thaiResult" class="result-value">๒๕๖๙</div>
-                    <button onclick="copyToClipboard('thaiResult', this)" class="action-btn">📋 Copy</button>
+                <div style="margin-top: 1rem;">
+                    <span class="result-label">Thai Numeral Result:</span>
+                    <div class="result-row">
+                        <div id="thaiResult" class="result-value">๒๕๖๙</div>
+                        <button onclick="copyToClipboard('thaiResult', this)" class="action-btn">📋 Copy</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -515,24 +499,22 @@
 
     <!-- JavaScript Logic -->
     <script>
+        function switchTab(tabId, btnElement) {
+            // Hide all tab contents
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
 
-function switchTab(tabId, btnElement) {
-    // Hide all tab contents
-    document.querySelectorAll('.tab-content').forEach(tab => {
-        tab.classList.remove('active');
-    });
+            // Deactivate all tab buttons
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
 
-    // Deactivate all tab buttons
-    document.querySelectorAll('.tab-btn').forEach(btn => {
-        btn.classList.remove('active');
-    });
+            // Show active tab content and highlight active button
+            document.getElementById(tabId).classList.add('active');
+            btnElement.classList.add('active');
+        }
 
-    // Show active tab content and highlight active button
-    document.getElementById(tabId).classList.add('active');
-    btnElement.classList.add('active');
-}
-
-        
         // --- Native Dark Mode Handler ---
         function toggleDarkMode() {
             const html = document.documentElement;
@@ -597,94 +579,85 @@ function switchTab(tabId, btnElement) {
 
         // --- EXCEL BAHTTEXT ENGINE ---
         function bahtText(numInput) {
-    if (numInput === null || numInput === undefined || numInput === "") return "---";
+            if (numInput === null || numInput === undefined || numInput === "") return "---";
 
-    // Convert Thai digits in input to Arabic digits first
-    let cleanInput = String(numInput).replace(/[๐-๙]/g, char => thaiToArabicMap[char] || char);
-    // Remove commas and white space
-    cleanInput = cleanInput.replace(/,/g, "").trim();
+            let cleanInput = String(numInput).replace(/[๐-๙]/g, char => thaiToArabicMap[char] || char);
+            cleanInput = cleanInput.replace(/,/g, "").trim();
 
-    const num = parseFloat(cleanInput);
-    if (isNaN(num)) return "---";
+            const num = parseFloat(cleanInput);
+            if (isNaN(num)) return "---";
 
-    // Handle negative numbers
-    let prefix = "";
-    let absNum = num;
-    if (num < 0) {
-        prefix = "ลบ";
-        absNum = Math.abs(num);
-    }
+            let prefix = "";
+            let absNum = num;
+            if (num < 0) {
+                prefix = "ลบ";
+                absNum = Math.abs(num);
+            }
 
-    // Round to 2 decimal places like Baht / Satang standard
-    const rounded = (Math.round(absNum * 100) / 100).toFixed(2);
-    const [integerPart, decimalPart] = rounded.split(".");
+            const rounded = (Math.round(absNum * 100) / 100).toFixed(2);
+            const [integerPart, decimalPart] = rounded.split(".");
 
-    const numbers = ["", "หนึ่ง", "สอง", "สาม", "สี่", "ห้า", "หก", "เจ็ด", "แปด", "เก้า"];
-    const positions = ["", "สิบ", "ร้อย", "พัน", "หมื่น", "แสน", "ล้าน"];
+            const numbers = ["", "หนึ่ง", "สอง", "สาม", "สี่", "ห้า", "หก", "เจ็ด", "แปด", "เก้า"];
+            const positions = ["", "สิบ", "ร้อย", "พัน", "หมื่น", "แสน", "ล้าน"];
 
-    function convertSegment(strNum) {
-        let result = "";
-        const len = strNum.length;
+            function convertSegment(strNum) {
+                let result = "";
+                const len = strNum.length;
+                let hasPrecedingDigit = false;
 
-        // Check if there is any non-zero digit preceding the current digit in this segment
-        let hasPrecedingDigit = false;
+                for (let i = 0; i < len; i++) {
+                    const digit = parseInt(strNum.charAt(i), 10);
+                    const pos = len - i - 1;
 
-        for (let i = 0; i < len; i++) {
-            const digit = parseInt(strNum.charAt(i), 10);
-            const pos = len - i - 1;
-
-            if (digit !== 0) {
-                if (pos === 1 && digit === 1) {
-                    result += "";
-                } else if (pos === 1 && digit === 2) {
-                    result += "ยี่";
-                } else if (pos === 0 && digit === 1 && hasPrecedingDigit) {
-                    // Only use 'เอ็ด' if there is a preceding non-zero digit in the segment (e.g. 11 -> สิบเอ็ด, 21 -> ยี่สิบเอ็ด)
-                    // If no preceding digit (e.g. 01 in Satang or standalone 1), use 'หนึ่ง'
-                    result += "เอ็ด";
-                } else {
-                    result += numbers[digit];
+                    if (digit !== 0) {
+                        if (pos === 1 && digit === 1) {
+                            result += "";
+                        } else if (pos === 1 && digit === 2) {
+                            result += "ยี่";
+                        } else if (pos === 0 && digit === 1 && hasPrecedingDigit) {
+                            result += "เอ็ด";
+                        } else {
+                            result += numbers[digit];
+                        }
+                        result += positions[pos];
+                        hasPrecedingDigit = true;
+                    }
                 }
-                result += positions[pos];
-                hasPrecedingDigit = true;
+                return result;
+            }
+
+            function convertInteger(strNum) {
+                if (strNum === "0" || strNum === "") return "ศูนย์";
+                let result = "";
+                let remaining = strNum;
+
+                while (remaining.length > 6) {
+                    const chunk = remaining.substring(remaining.length - 6);
+                    remaining = remaining.substring(0, remaining.length - 6);
+                    result = convertSegment(chunk) + result;
+                    if (remaining.length > 0) {
+                        result = "ล้าน" + result;
+                    }
+                }
+                result = convertSegment(remaining) + result;
+                return result;
+            }
+
+            let bahtResult = convertInteger(integerPart);
+            let satangResult = "";
+
+            if (decimalPart && decimalPart !== "00") {
+                satangResult = convertSegment(decimalPart) + "สตางค์";
+            }
+
+            if (bahtResult === "ศูนย์" && satangResult !== "") {
+                return prefix + satangResult;
+            } else if (satangResult === "") {
+                return prefix + bahtResult + "บาทถ้วน";
+            } else {
+                return prefix + bahtResult + "บาท" + satangResult;
             }
         }
-        return result;
-    }
-
-    function convertInteger(strNum) {
-        if (strNum === "0" || strNum === "") return "ศูนย์";
-        let result = "";
-        let remaining = strNum;
-
-        // Process in 6-digit chunks (ล้าน)
-        while (remaining.length > 6) {
-            const chunk = remaining.substring(remaining.length - 6);
-            remaining = remaining.substring(0, remaining.length - 6);
-            result = convertSegment(chunk) + result;
-            if (remaining.length > 0) {
-                result = "ล้าน" + result;
-            }
-        }
-        result = convertSegment(remaining) + result;
-        return result;
-    }
-
-    let bahtResult = convertInteger(integerPart);
-    let satangResult = "";
-
-    if (decimalPart && decimalPart !== "00") {
-        satangResult = convertSegment(decimalPart) + "สตางค์";
-    }
-
-    if (bahtResult === "ศูนย์" && satangResult !== "") {
-        return prefix + satangResult;
-    } else if (satangResult === "") {
-        return prefix + bahtResult + "บาทถ้วน";
-    } else {
-        return prefix + bahtResult + "บาท" + satangResult;
-    }
-}
 
         function convertBahtText() {
             const inputVal = document.getElementById('bahtInput').value;
