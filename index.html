@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Thai-Arabic Numeral Converter</title>
+    <title>Thai-Arabic Numeral & BahtText Converter</title>
 
     <!-- Emoji Favicon (Thai Number One: ๑) -->
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>๑</text></svg>">
@@ -185,13 +185,13 @@
         }
 
         .result-value {
-            font-size: clamp(1.4rem, 5vw, 2.25rem);
+            font-size: clamp(1.2rem, 4.5vw, 1.8rem);
             font-weight: 700;
             color: var(--primary);
             min-height: 40px;
             word-break: break-all;
             overflow-wrap: anywhere;
-            line-height: 1.2;
+            line-height: 1.3;
         }
 
         .action-btn {
@@ -284,7 +284,7 @@
 
         .chip-btn {
             background-color: var(--primary-light);
-            border: none;
+            border: 1px solid var(--border-color);
             color: var(--primary);
             padding: 0.6rem 0;
             font-weight: 700;
@@ -313,7 +313,6 @@
             margin-top: 2px;
         }
 
-        /* Distinct styling for mathematical symbol buttons */
         .symbol-btn {
             background-color: var(--input-bg);
             color: var(--text-main);
@@ -340,7 +339,7 @@
 
     <!-- Header & Theme Toggle -->
     <header>
-        <h1>🇹🇭 Thai Numeral Converter</h1>
+        <h1>🇹🇭 Thai Numeral & Currency Converter</h1>
         <button onclick="toggleDarkMode()" class="theme-btn">
             <span id="themeIcon">🌙</span>
         </button>
@@ -351,10 +350,24 @@
         <!-- Context Helper Banner -->
         <div class="banner">
             <h2>📖 Quick Use Cases</h2>
-            <p>Great for decoding Thai government notices, official land documents, tax records, prices, and converting Buddhist Era years (B.E. / พ.ศ.).</p>
+            <p>Great for decoding official land documents, tax invoices, price lists, converting B.E. years, and generating formal Thai Baht text for receipts.</p>
         </div>
 
-        <!-- Section 1: Thai Chips Builder to Arabic -->
+        <!-- Section 1: BahtText Currency Converter -->
+        <div class="card">
+            <label for="bahtInput">Thai Baht Amount (Excel THAIBAHT / BAHTTEXT)</label>
+            <input type="text" id="bahtInput" placeholder="e.g., 1250.75 or ๒๕๖๐.๕๐" oninput="convertBahtText()">
+
+            <div style="margin-top: 1rem;">
+                <span class="result-label">Thai Baht Text (อ่านเป็นภาษาไทย):</span>
+                <div class="result-row">
+                    <div id="bahtResult" class="result-value">หนึ่งพันสองร้อยห้าสิบบาทเจ็ดสิบห้าสตางค์</div>
+                    <button onclick="copyToClipboard('bahtResult', this)" class="action-btn">📋 Copy</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 2: Thai Chips Builder to Arabic -->
         <div class="card">
             <div class="chip-display-header">
                 <label style="margin-bottom: 0;">Thai Numerals & Expressions</label>
@@ -372,33 +385,29 @@
 
             <!-- Thai Numpad & Symbol Chips Palette -->
             <div class="palette-grid">
-                <!-- Numbers Row 1 -->
                 <button onclick="appendThai('๑')" class="chip-btn">๑ <span class="chip-sub">1</span></button>
                 <button onclick="appendThai('๒')" class="chip-btn">๒ <span class="chip-sub">2</span></button>
                 <button onclick="appendThai('๓')" class="chip-btn">๓ <span class="chip-sub">3</span></button>
                 <button onclick="appendThai('๔')" class="chip-btn">๔ <span class="chip-sub">4</span></button>
                 <button onclick="appendThai('๕')" class="chip-btn">๕ <span class="chip-sub">5</span></button>
 
-                <!-- Numbers Row 2 -->
                 <button onclick="appendThai('๖')" class="chip-btn">๖ <span class="chip-sub">6</span></button>
                 <button onclick="appendThai('๗')" class="chip-btn">๗ <span class="chip-sub">7</span></button>
                 <button onclick="appendThai('๘')" class="chip-btn">๘ <span class="chip-sub">8</span></button>
                 <button onclick="appendThai('๙')" class="chip-btn">๙ <span class="chip-sub">9</span></button>
                 <button onclick="appendThai('๐')" class="chip-btn">๐ <span class="chip-sub">0</span></button>
 
-                <!-- Punctuation & Decimals -->
-                <button onclick="appendThai('.')" class="chip-btn symbol-btn">. <span class="chip-sub">Dot</span></button>
-                <button onclick="appendThai(',')" class="chip-btn symbol-btn">, <span class="chip-sub">Comma</span></button>
-                <button onclick="appendThai('(')" class="chip-btn symbol-btn">( <span class="chip-sub">(</span></button>
-                <button onclick="appendThai(')')" class="chip-btn symbol-btn">) <span class="chip-sub">)</span></button>
-                <button onclick="appendThai('%')" class="chip-btn symbol-btn">% <span class="chip-sub">%</span></button>
+                <button onclick="appendThai('.')" class="chip-btn symbol-btn">.</button>
+                <button onclick="appendThai(',')" class="chip-btn symbol-btn">,</button>
+                <button onclick="appendThai('(')" class="chip-btn symbol-btn">(</button>
+                <button onclick="appendThai(')')" class="chip-btn symbol-btn">)</button>
+                <button onclick="appendThai('%')" class="chip-btn symbol-btn">%</button>
 
-                <!-- Mathematical Operations -->
-                <button onclick="appendThai('+')" class="chip-btn symbol-btn">+ <span class="chip-sub">+</span></button>
-                <button onclick="appendThai('-')" class="chip-btn symbol-btn">- <span class="chip-sub">-</span></button>
-                <button onclick="appendThai('*')" class="chip-btn symbol-btn">* <span class="chip-sub">×</span></button>
-                <button onclick="appendThai('/')" class="chip-btn symbol-btn">/ <span class="chip-sub">÷</span></button>
-                <button onclick="appendThai('=')" class="chip-btn symbol-btn">= <span class="chip-sub">=</span></button>
+                <button onclick="appendThai('+')" class="chip-btn symbol-btn">+</button>
+                <button onclick="appendThai('-')" class="chip-btn symbol-btn">-</button>
+                <button onclick="appendThai('*')" class="chip-btn symbol-btn">*</button>
+                <button onclick="appendThai('/')" class="chip-btn symbol-btn">/</button>
+                <button onclick="appendThai('=')" class="chip-btn symbol-btn">=</button>
             </div>
 
             <div style="margin-top: 1rem;">
@@ -410,10 +419,9 @@
             </div>
         </div>
 
-        <!-- Section 2: Arabic Input to Thai Numerals -->
+        <!-- Section 3: Arabic Input to Thai Numerals -->
         <div class="card">
             <label for="arabicInput">Arabic Expression Input</label>
-            <!-- Changed input type from 'number' to 'text' to support symbols -->
             <input type="text" id="arabicInput" placeholder="e.g., (1,250.50 + 50%) * 2 = ?" oninput="convertArabicToThai()">
 
             <div style="margin-top: 1rem;">
@@ -428,7 +436,7 @@
 
     <!-- Footer -->
     <footer>
-        Built for decoding Thai documents &bull; Open source on GitHub
+        Built for decoding Thai documents & financial receipts &bull; Open source on GitHub
     </footer>
 
     <!-- JavaScript Converter Logic -->
@@ -483,7 +491,6 @@
                 const text = await navigator.clipboard.readText();
                 if (!text) return;
 
-                // Regex matches Thai digits along with supported punctuation & operators
                 const validChars = text.match(/[๐-๙.,()+\-*\/=%?]/g);
                 if (validChars && validChars.length > 0) {
                     currentThaiChips = currentThaiChips.concat(validChars);
@@ -494,6 +501,97 @@
             } catch (err) {
                 alert("Clipboard access permission required to paste.");
             }
+        }
+
+        // --- EXCEL BAHTTEXT ENGINE ---
+        function bahtText(numInput) {
+            if (numInput === null || numInput === undefined || numInput === "") return "---";
+
+            // Convert Thai digits in input to Arabic digits first
+            let cleanInput = String(numInput).replace(/[๐-๙]/g, char => thaiToArabicMap[char] || char);
+            // Remove commas and white space
+            cleanInput = cleanInput.replace(/,/g, "").trim();
+
+            const num = parseFloat(cleanInput);
+            if (isNaN(num)) return "---";
+
+            // Handle negative numbers
+            let prefix = "";
+            let absNum = num;
+            if (num < 0) {
+                prefix = "ลบ";
+                absNum = Math.abs(num);
+            }
+
+            // Round to 2 decimal places like Baht / Satang standard
+            const rounded = (Math.round(absNum * 100) / 100).toFixed(2);
+            const [integerPart, decimalPart] = rounded.split(".");
+
+            const numbers = ["", "หนึ่ง", "สอง", "สาม", "สี่", "ห้า", "หก", "เจ็ด", "แปด", "เก้า"];
+            const positions = ["", "สิบ", "ร้อย", "พัน", "หมื่น", "แสน", "ล้าน"];
+
+            function convertSegment(strNum) {
+                let result = "";
+                const len = strNum.length;
+                for (let i = 0; i < len; i++) {
+                    const digit = parseInt(strNum.charAt(i), 10);
+                    const pos = len - i - 1;
+
+                    if (digit !== 0) {
+                        if (pos === 1 && digit === 1) {
+                            result += "";
+                        } else if (pos === 1 && digit === 2) {
+                            result += "ยี่";
+                        } else if (pos === 0 && digit === 1 && len > 1) {
+                            // If the last digit in a segment is 1 and length > 1, use 'เอ็ด'
+                            result += "เอ็ด";
+                        } else {
+                            result += numbers[digit];
+                        }
+                        result += positions[pos];
+                    }
+                }
+                return result;
+            }
+
+            function convertInteger(strNum) {
+                if (strNum === "0" || strNum === "") return "ศูนย์";
+                let result = "";
+                let remaining = strNum;
+
+                // Process in 6-digit chunks (ล้าน)
+                while (remaining.length > 6) {
+                    const chunk = remaining.substring(remaining.length - 6);
+                    remaining = remaining.substring(0, remaining.length - 6);
+                    result = convertSegment(chunk) + result;
+                    if (remaining.length > 0) {
+                        result = "ล้าน" + result;
+                    }
+                }
+                result = convertSegment(remaining) + result;
+                return result;
+            }
+
+            let bahtResult = convertInteger(integerPart);
+            let satangResult = "";
+
+            if (decimalPart && decimalPart !== "00") {
+                satangResult = convertSegment(decimalPart) + "สตางค์";
+            }
+
+            if (bahtResult === "ศูนย์" && satangResult !== "") {
+                return prefix + satangResult;
+            } else if (satangResult === "") {
+                return prefix + bahtResult + "บาทถ้วน";
+            } else {
+                return prefix + bahtResult + "บาท" + satangResult;
+            }
+        }
+
+        function convertBahtText() {
+            const inputVal = document.getElementById('bahtInput').value;
+            const resEl = document.getElementById('bahtResult');
+            resEl.textContent = bahtText(inputVal);
         }
 
         // --- Conversion Engines ---
@@ -538,7 +636,6 @@
                 return;
             }
 
-            // Render selected Thai chips
             currentThaiChips.forEach((char) => {
                 const chip = document.createElement('span');
                 chip.className = 'chip-item';
@@ -546,7 +643,6 @@
                 container.appendChild(chip);
             });
 
-            // Convert array of Thai chips to Arabic representation
             let arabicString = "";
             currentThaiChips.forEach((char) => {
                 arabicString += thaiToArabicMap[char] !== undefined ? thaiToArabicMap[char] : char;
@@ -556,6 +652,9 @@
         }
 
         // Run default state setup on load
+        document.getElementById('bahtInput').value = "1250.75";
+        convertBahtText();
+
         document.getElementById('arabicInput').value = "2,569.50 + 10%";
         convertArabicToThai();
     </script>
