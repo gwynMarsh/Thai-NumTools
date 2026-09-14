@@ -292,6 +292,8 @@
             font-weight: 700;
             font-size: clamp(1.1rem, 3.5vw, 1.4rem);
             border-radius: 999px;
+            aspect-ratio: 1 / 1; /* Forces square bounds to render perfect circles */
+            padding: 0;
             cursor: pointer;
             transition: background-color 0.2s, transform 0.1s;
             display: flex;
