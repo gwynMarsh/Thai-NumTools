@@ -176,14 +176,18 @@
             gap: 0.5rem;
         }
 
-        .result-value {
-            font-size: clamp(1.2rem, 4.5vw, 1.8rem);
-            font-weight: 700;
-            color: var(--primary);
-            min-height: 40px;
-            word-break: break-all;
-            overflow-wrap: anywhere;
-            line-height: 1.3;
+.result-value {
+    font-size: clamp(1.2rem, 4.5vw, 1.8rem);
+    font-weight: 700;
+    color: var(--primary);
+    min-height: 40px;
+    line-height: 1.3;
+
+    /* Dictionary Line-Breaking Rules */
+    word-break: normal;        /* Disables aggressive character-level splitting */
+    overflow-wrap: break-word; /* Wraps long text gracefully without overflowing */
+    line-break: strict;        /* Enforces strict OS/browser dictionary rules for CJK and Thai */
+}
         }
 
         .action-btn {
@@ -405,7 +409,7 @@
                 <div style="margin-top: 1rem;">
                     <span class="result-label">Thai Baht Text (อ่านเป็นภาษาไทย):</span>
                     <div class="result-row">
-                        <div id="bahtResult" class="result-value">หนึ่งพันสองร้อยห้าสิบบาทเจ็ดสิบห้าสตางค์</div>
+                        <div id="bahtResult" class="result-value" lang="th">หนึ่งพันสองร้อยห้าสิบบาทเจ็ดสิบห้าสตางค์</div>
                         <button onclick="copyToClipboard('bahtResult', this)" class="action-btn">📋 Copy</button>
                     </div>
                 </div>
