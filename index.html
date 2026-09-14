@@ -85,11 +85,15 @@
             border-radius: 12px;
             cursor: pointer;
             font-size: 1rem;
-            transition: transform 0.2s, background-color 0.3s;
+            transition: transform 0.15s ease, background-color 0.3s;
         }
 
         .theme-btn:hover {
             transform: scale(1.05);
+        }
+
+        .theme-btn:active {
+            transform: scale(0.95);
         }
 
         main {
@@ -171,23 +175,23 @@
         .result-row {
             display: flex;
             justify-content: space-between;
-            align-items: center;
+            align-items: flex-start;
             margin-top: 0.25rem;
-            gap: 0.5rem;
+            gap: 0.75rem;
         }
 
-.result-value {
-    font-size: clamp(1.2rem, 4.5vw, 1.8rem);
-    font-weight: 700;
-    color: var(--primary);
-    min-height: 40px;
-    line-height: 1.3;
+        .result-value {
+            font-size: clamp(1.2rem, 4.5vw, 1.8rem);
+            font-weight: 700;
+            color: var(--primary);
+            min-height: 40px;
+            line-height: 1.3;
+            flex-grow: 1;
 
-    /* Dictionary Line-Breaking Rules */
-    word-break: normal;        /* Disables aggressive character-level splitting */
-    overflow-wrap: break-word; /* Wraps long text gracefully without overflowing */
-    line-break: strict;        /* Enforces strict OS/browser dictionary rules for CJK and Thai */
-}
+            /* Dictionary Line-Breaking Rules */
+            word-break: normal;        /* Disables aggressive character-level splitting */
+            overflow-wrap: break-word; /* Wraps long text gracefully without overflowing */
+            line-break: strict;        /* Enforces strict OS/browser dictionary rules for CJK and Thai */
         }
 
         .action-btn {
@@ -201,6 +205,8 @@
             cursor: pointer;
             transition: background-color 0.2s, transform 0.1s;
             white-space: nowrap;
+            flex-shrink: 0;
+            align-self: flex-start;
         }
 
         .action-btn:hover {
