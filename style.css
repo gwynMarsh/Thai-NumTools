@@ -39,7 +39,7 @@
         body {
             background-color: var(--bg-color);
             color: var(--text-main);
-            font-family: 'Noto Serif Thai', 'Thonburi', 'Leelawadee UI', 'Segoe UI', Georgia, serif;
+            font-family: 'Google Sans', 'Thonburi', 'Leelawadee UI', 'Segoe UI', Georgia, serif;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
