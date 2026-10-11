@@ -355,7 +355,7 @@
             display: grid;
             grid-template-columns: repeat(2, minmax(0, 1fr));
             gap: 0.85rem;
-            align-items: end;
+            align-items: start;
             margin: 1rem 0;
         }
         .format-controls > div { min-width: 0; }
@@ -380,10 +380,57 @@
         [hidden] { display: none !important; }
         @media (max-width: 540px) {
             .tab-container { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+            .format-controls { grid-template-columns: 1fr; }
         }
         @media (max-width: 380px) {
             .format-controls { grid-template-columns: 1fr; }
             .palette-grid { gap: 0.4rem; }
             #numberFormatTab input { font-size: 1.15rem; }
+        }
+
+        /* Consistent fourth-tab controls, including the opened option list. */
+        #numberFormatTab label:not(.comma-toggle) { font-size: 0.95rem; }
+        .separator-controls { display: flex; justify-content: space-between; align-items: center; gap: 1rem; margin: 1rem 0; }
+        .comma-toggle { display: inline-flex; position: relative; align-items: center; gap: 0.85rem; min-height: 56px; margin: 0; font: inherit; color: var(--text-main); cursor: pointer; }
+        .comma-toggle input {
+            position: absolute; width: 1px; height: 1px; opacity: 0;
+            padding: 0; border: 0; margin: 0;
+        }
+        .toggle-track { width: 56px; height: 32px; flex-shrink: 0; border: 1px solid var(--border-color); border-radius: 999px; background: var(--border-color); padding: 3px; transition: background-color 0.2s; }
+        .toggle-knob { display: block; width: 24px; height: 24px; border-radius: 50%; background: var(--card-bg); box-shadow: 0 1px 3px rgba(0,0,0,0.15); transition: transform 0.2s; }
+        .comma-toggle input:checked + .toggle-track { background: var(--primary); border-color: var(--primary); }
+        .comma-toggle input:checked + .toggle-track .toggle-knob { transform: translateX(24px); }
+        .comma-toggle input:focus-visible + .toggle-track { outline: 2px solid var(--primary); outline-offset: 3px; }
+        .toggle-label { font-size: 1rem; font-weight: 600; line-height: 1.4; }
+        .toggle-detail { display: block; color: var(--text-muted); font-size: 0.85rem; font-weight: 400; }
+        #numberFormatTab select, .select-trigger {
+            appearance: none; -webkit-appearance: none; width: 100%; min-width: 0;
+            min-height: 48px; padding: 0.75rem; border: 1px solid var(--border-color);
+            border-radius: 12px; background: var(--input-bg); color: var(--text-main);
+            font: inherit; font-size: 1rem; line-height: 1.4;
+        }
+        .select-trigger { display: flex; align-items: center; justify-content: space-between; gap: 0.75rem; text-align: left; cursor: pointer; }
+        .select-trigger > span:first-child { min-width: 0; overflow-wrap: anywhere; }
+        .select-trigger:hover:not(:disabled), .select-trigger[aria-expanded="true"] { border-color: var(--primary); }
+        .select-arrow { width: 8px; height: 8px; flex-shrink: 0; border-right: 2px solid var(--text-muted); border-bottom: 2px solid var(--text-muted); transform: rotate(45deg) translateY(-2px); }
+        .select-trigger[aria-expanded="true"] .select-arrow { transform: rotate(225deg) translate(-2px, -2px); }
+        .select-options {
+            position: fixed; z-index: 1000; overflow-y: auto; overscroll-behavior: contain;
+            background: var(--card-bg); color: var(--text-main);
+            border: 1px solid var(--border-color); border-radius: 14px; padding: 0.35rem;
+            box-shadow: 0 8px 28px rgba(0,0,0,0.18); font: inherit; font-size: 1rem;
+            scrollbar-width: thin; scrollbar-color: var(--border-color) var(--card-bg);
+        }
+        .select-option { display: flex; justify-content: space-between; align-items: center; gap: 0.75rem; min-height: 48px; padding: 0.65rem 0.75rem; border-radius: 9px; line-height: 1.45; cursor: pointer; overflow-wrap: anywhere; }
+        .select-option > span:first-child { min-width: 0; }
+        .select-option:hover, .select-option.option-active { background: var(--primary-light); color: var(--primary); }
+        .select-option[aria-selected="true"] { font-weight: 600; }
+        .option-check { flex-shrink: 0; width: 1rem; color: var(--primary); }
+        @media (forced-colors: active) {
+            .toggle-track, .toggle-knob { forced-color-adjust: none; border: 1px solid ButtonText; }
+            .toggle-track { background: Canvas; }
+            .toggle-knob { background: ButtonText; }
+            .comma-toggle input:checked + .toggle-track { background: Highlight; }
+            .select-option.option-active { background: Highlight; color: HighlightText; }
         }
 
