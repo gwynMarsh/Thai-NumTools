@@ -32,6 +32,7 @@
             <button class="tab-btn active" onclick="switchTab('bahtTab', this)">BahtText</button>
             <button class="tab-btn" onclick="switchTab('thaiToArabicTab', this)">๑๒๓ → 123</button>
             <button class="tab-btn" onclick="switchTab('arabicToThaiTab', this)">123 → ๑๒๓</button>
+            <button class="tab-btn" onclick="switchTab('numberFormatTab', this)">Number Format</button>
         </nav>
 
         <!-- Tab 1: BahtText -->
@@ -118,13 +119,116 @@
                 </div>
             </div>
         </div>
+        <!-- Tab 4: Number formatting -->
+        <div id="numberFormatTab" class="tab-content">
+            <div class="format-tools">
+                <section class="card" aria-labelledby="separatorHeading">
+                    <h2 id="separatorHeading" class="tool-heading">Separators</h2>
+                    <label for="separatorInput">Number · Thai or Arabic digits</label>
+                    <input type="text" id="separatorInput" inputmode="decimal" placeholder="1234567.50 or ๑๒๓๔๕๖๗.๕๐"
+                        oninput="updateSeparators()">
+                    <div class="format-controls">
+                        <div>
+                            <label for="separatorMode">Commas</label>
+                            <select id="separatorMode" onchange="updateSeparators()">
+                                <option value="add">Add commas</option>
+                                <option value="remove">Remove commas</option>
+                            </select>
+                        </div>
+                        <button class="clear-btn" onclick="clearFormatInput('separator')">Clear</button>
+                    </div>
+                    <div class="result-row">
+                        <output id="separatorResult" class="result-value" for="separatorInput separatorMode">---</output>
+                        <button id="separatorCopy" onclick="copyToClipboard('separatorResult', this)" class="action-btn" disabled>📋 Copy</button>
+                    </div>
+                    <p id="separatorStatus" class="format-status" role="status"></p>
+                </section>
+
+                <section class="card" aria-labelledby="currencyHeading">
+                    <h2 id="currencyHeading" class="tool-heading">Currency Notation</h2>
+                    <label for="currencyInput">Amount · with or without a currency</label>
+                    <input type="text" id="currencyInput" placeholder="US$1,234.50"
+                        oninput="updateCurrencyFormat()">
+                    <div class="format-controls">
+                        <div>
+                            <label for="currencySelect">Currency</label>
+                            <select id="currencySelect" onchange="updateCurrencyRegions(); updateCurrencyFormat()">
+                                <option value="">Detect currency</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="currencyInputFormat">Input separators</label>
+                            <select id="currencyInputFormat" onchange="updateCurrencyFormat()">
+                                <option value="english">1,234.50</option>
+                                <option value="commaDecimal">1.234,50</option>
+                                <option value="regional">Currency region</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="currencyStyle">Output style</label>
+                            <select id="currencyStyle" onchange="updateCurrencyFormat()">
+                                <option value="thai">Thai name</option>
+                                <option value="code">Code</option>
+                                <option value="symbol">Symbol (English)</option>
+                                <option value="regional">Regional</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="currencyDigits">Output digits</label>
+                            <select id="currencyDigits" onchange="updateCurrencyFormat()">
+                                <option value="preserve">Keep input</option>
+                                <option value="arabic">Arabic (123)</option>
+                                <option value="thai">Thai (๑๒๓)</option>
+                            </select>
+                        </div>
+                        <div id="currencyRegionControl" hidden>
+                            <label for="currencyRegion">Region</label>
+                            <select id="currencyRegion" onchange="updateCurrencyFormat()"></select>
+                        </div>
+                        <div>
+                            <label for="currencyPrecision">Decimal places</label>
+                            <select id="currencyPrecision" onchange="updateCurrencyFormat()">
+                                <option value="preserve">Preserve input</option>
+                                <option value="currency">Currency default</option>
+                                <option value="custom">Custom</option>
+                            </select>
+                        </div>
+                        <div id="customDecimalsControl" hidden>
+                            <label for="currencyDecimals">Number of decimal places</label>
+                            <select id="currencyDecimals" onchange="updateCurrencyFormat()">
+                                <option value="0">0</option>
+                                <option value="1">1</option>
+                                <option value="2" selected>2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5">5</option>
+                                <option value="6">6</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="result-row">
+                        <output id="currencyResult" class="result-value" for="currencyInput currencySelect currencyStyle">---</output>
+                        <button id="currencyCopy" onclick="copyToClipboard('currencyResult', this)" class="action-btn" disabled>📋 Copy</button>
+                    </div>
+                    <p id="currencyStatus" class="format-status" role="status"></p>
+                    <p id="currencyRounding" class="format-status rounding-notice" role="status"></p>
+                    <div class="tool-footer">
+                        <span id="currencyDetected" class="format-status"></span>
+                        <button class="clear-btn" onclick="clearFormatInput('currency')">Clear</button>
+                    </div>
+                </section>
+            </div>
+        </div>
     </main>
 
     <!-- Footer -->
     <footer><span id="clipboardStatus" role="status"></span></footer>
 
     <script src="converter.js"></script>
+    <script src="currencies.js"></script>
+    <script src="number-format.js"></script>
     <script src="app.js"></script>
+    <script src="format-ui.js"></script>
 </body>
 </html>
 
