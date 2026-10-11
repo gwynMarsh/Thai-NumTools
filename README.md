@@ -48,3 +48,25 @@ node --test tests/*.test.js
 ```
 
 Open index.html in a browser or serve the folder with any static server.
+
+## Fourth-tab controls
+
+The Use commas switch adds grouping when enabled and removes it when disabled.
+Currency pickers use app-styled buttons and option lists. Arrow keys navigate, Enter
+or Space opens/selects, Escape cancels, Tab accepts the highlighted option, and
+typing finds currency codes or names. Clicking outside cancels. Native selects
+remain in the markup as the fallback and the source of options; adding a currency
+still requires editing only currencies.js.
+
+Optional browser regression checks (development only):
+
+```sh
+npm install --no-save --package-lock=false playwright
+npx playwright install chromium
+node tests/controls.browser.cjs
+```
+
+The browser script covers light/dark themes at mobile and desktop widths, toggling,
+currency/region controls, keyboard selection/cancellation, type-to-find, copying,
+validation and viewport bounds. BROWSER_EXECUTABLE can point to an existing
+Chromium installation; BROWSER_ARGS optionally accepts a JSON array of flags.

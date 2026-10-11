@@ -9,9 +9,11 @@ function setFormatResult(tool, value, message = "") {
 
 function updateSeparators() {
     const input = document.getElementById("separatorInput").value;
+    const useCommas = document.getElementById("separatorCommas").checked;
+    document.getElementById("separatorModeLabel").textContent = useCommas ? "1,234.50" : "1234.50";
     if (!input.trim()) return setFormatResult("separator", "");
     try {
-        setFormatResult("separator", NumberTools.formatSeparators(input, document.getElementById("separatorMode").value));
+        setFormatResult("separator", NumberTools.formatSeparators(input, useCommas ? "add" : "remove"));
     } catch (error) {
         setFormatResult("separator", "", error.message);
     }
@@ -34,13 +36,15 @@ function updateCurrencyRegions() {
     if (select.dataset.currency === code) return;
     select.dataset.currency = code;
     select.replaceChildren();
-    if (!currency) return;
-    for (const region of [{ locale: currency.locale, region: currency.region }, ...(currency.otherRegions || [])]) {
-        const option = document.createElement("option");
-        option.value = region.locale;
-        option.textContent = region.region || region.locale;
-        select.appendChild(option);
+    if (currency) {
+        for (const region of [{ locale: currency.locale, region: currency.region }, ...(currency.otherRegions || [])]) {
+            const option = document.createElement("option");
+            option.value = region.locale;
+            option.textContent = region.region || region.locale;
+            select.appendChild(option);
+        }
     }
+    CustomSelect.refresh(select);
 }
 
 function updateCurrencyFormat() {
@@ -88,3 +92,4 @@ for (const currency of CURRENCIES) {
 }
 updateSeparators();
 updateCurrencyFormat();
+CustomSelect.enhance(document.getElementById("numberFormatTab"));

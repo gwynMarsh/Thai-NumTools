@@ -127,18 +127,16 @@
                     <label for="separatorInput">Number · Thai or Arabic digits</label>
                     <input type="text" id="separatorInput" inputmode="decimal" placeholder="1234567.50 or ๑๒๓๔๕๖๗.๕๐"
                         oninput="updateSeparators()">
-                    <div class="format-controls">
-                        <div>
-                            <label for="separatorMode">Commas</label>
-                            <select id="separatorMode" onchange="updateSeparators()">
-                                <option value="add">Add commas</option>
-                                <option value="remove">Remove commas</option>
-                            </select>
-                        </div>
+                    <div class="separator-controls">
+                        <label class="comma-toggle" for="separatorCommas">
+                            <input type="checkbox" id="separatorCommas" role="switch" checked onchange="updateSeparators()">
+                            <span class="toggle-track" aria-hidden="true"><span class="toggle-knob"></span></span>
+                            <span class="toggle-label">Use commas<span id="separatorModeLabel" class="toggle-detail" aria-hidden="true">1,234.50</span></span>
+                        </label>
                         <button class="clear-btn" onclick="clearFormatInput('separator')">Clear</button>
                     </div>
                     <div class="result-row">
-                        <output id="separatorResult" class="result-value" for="separatorInput separatorMode">---</output>
+                        <output id="separatorResult" class="result-value" for="separatorInput separatorCommas">---</output>
                         <button id="separatorCopy" onclick="copyToClipboard('separatorResult', this)" class="action-btn" disabled>📋 Copy</button>
                     </div>
                     <p id="separatorStatus" class="format-status" role="status"></p>
@@ -228,6 +226,7 @@
     <script src="currencies.js"></script>
     <script src="number-format.js"></script>
     <script src="app.js"></script>
+    <script src="custom-select.js"></script>
     <script src="format-ui.js"></script>
 </body>
 </html>
