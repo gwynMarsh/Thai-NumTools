@@ -2,29 +2,30 @@
            1. COLOR SCHEME & NATIVE DARK MODE VARIABLES
            ========================================================================== */
         :root {
-            --bg-color: #f8fafc;
+            --bg-color: #F7FAF8;
             --card-bg: #ffffff;
-            --text-main: #1e293b;
-            --text-muted: #64748b;
-            --border-color: #cbd5e1;
-            --input-bg: #f1f5f9;
-            --primary: #0284c7;           /* Sky Blue theme */
-            --primary-light: #e0f2fe;
-            --accent-hover: #bae6fd;
+            --text-main: #17251C;
+            --text-muted: #52675B;
+            --border-color: #C5D5CA;
+            --input-bg: #EEF5F0;
+            --primary: #166534;           /* Green theme */
+            --primary-light: #DCFCE7;
+            --accent-hover: #BBF7D0;
             --danger: #ef4444;
         }
 
         .dark {
-            --bg-color: #0f172a;
-            --card-bg: #1e293b;
-            --text-main: #f1f5f9;
-            --text-muted: #94a3b8;
-            --border-color: #334155;
-            --input-bg: #0f172a;
-            --primary: #38bdf8;
-            --primary-light: rgba(56, 189, 248, 0.2);
-            --accent-hover: rgba(56, 189, 248, 0.35);
-            --danger: #f87171;
+            --bg-color: #111814;
+            --card-bg: #1B2720;
+            --text-main: #EDF5EF;
+            --text-muted: #A9BCAF;
+            --border-color: #465D4D;
+            --input-bg: #152019;
+            --primary: #86EFAC;
+            --primary-light: #173B2A;
+            --accent-hover: #23543A;
+            --danger: #FCA5A5;
+            color-scheme: dark;
         }
 
         /* ==========================================================================
@@ -105,25 +106,6 @@
             overflow: hidden; 
         }
 
-        /* Borderless, clean banner on main background */
-        .banner {
-            background-color: transparent;
-            border: none;
-            padding: 0.25rem 0.5rem;
-            font-size: 0.875rem;
-        }
-
-        .banner h2 {
-            font-weight: 600;
-            color: var(--text-main);
-            margin-bottom: 0.25rem;
-        }
-
-        .banner p {
-            color: var(--text-muted);
-            line-height: 1.4;
-        }
-
         /* ==========================================================================
            4. FORM INPUTS & CONVERTED RESULT STYLES
            ========================================================================== */
@@ -135,7 +117,7 @@
             margin-bottom: 0.5rem;
         }
 
-        input[type="text"] {
+        input[type="text"], textarea {
             width: 100%;
             font-size: 1.5rem;
             font-weight: 600;
@@ -149,7 +131,7 @@
             transition: border-color 0.2s, box-shadow 0.2s;
         }
 
-        input[type="text"]:focus {
+        input[type="text"]:focus, textarea:focus {
             border-color: var(--primary);
             box-shadow: 0 0 0 2px var(--primary-light);
         }
@@ -238,37 +220,8 @@
             text-decoration: underline;
         }
 
-        .chip-container {
-            width: 100%;
-            min-height: 64px;
-            background-color: var(--input-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            padding: 0.75rem;
-            display: flex;
-            flex-wrap: wrap;
-            align-items: center;
-            gap: 0.4rem;
-            margin-bottom: 1rem;
-            max-height: 180px;
-            overflow-y: auto;
-        }
 
-        .placeholder-text {
-            color: var(--text-muted);
-            font-size: 0.875rem;
-            font-style: italic;
-        }
 
-        .chip-item {
-            padding: 0.25rem 0.6rem;
-            background-color: var(--primary-light);
-            border: 1px solid var(--border-color);
-            color: var(--primary);
-            border-radius: 8px;
-            font-size: clamp(1.2rem, 4vw, 1.5rem);
-            font-weight: 600;
-        }
 
         /* Numpad Grid Layout */
         .palette-grid {
@@ -280,11 +233,11 @@
             margin: 0 auto;
         }
 
-        /* Round Calculator Buttons */
+        /* Rounded square numeral keys */
         .chip-btn {
             width: 100%;
             aspect-ratio: 1 / 1;
-            border-radius: 999px;
+            border-radius: 12px;
             background-color: var(--primary-light);
             border: 1px solid var(--border-color);
             color: var(--primary);
@@ -382,3 +335,17 @@
             font-size: 0.75rem;
             color: var(--text-muted);
         }
+
+        :root { color-scheme: light; }
+        textarea { resize: vertical; min-height: 100px; line-height: 1.6; margin-bottom: 0.25rem; }
+        .status-text { color: var(--text-muted); font-size: 0.8rem; margin-bottom: 1rem; }
+        .chip-btn { min-height: 44px; }
+        .chip-sub { font-size: 11px; opacity: 1; }
+        .result-value { min-width: 0; overflow-wrap: anywhere; white-space: pre-wrap; }
+        button:focus-visible { outline: 2px solid var(--primary); outline-offset: 3px; }
+        .action-btn, .clear-btn, .tab-btn, .theme-btn { min-height: 44px; }
+        .chip-display-header { flex-wrap: wrap; gap: 0.5rem; }
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after { transition: none !important; }
+        }
+
