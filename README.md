@@ -70,3 +70,13 @@ The browser script covers light/dark themes at mobile and desktop widths, toggli
 currency/region controls, keyboard selection/cancellation, type-to-find, copying,
 validation and viewport bounds. BROWSER_EXECUTABLE can point to an existing
 Chromium installation; BROWSER_ARGS optionally accepts a JSON array of flags.
+
+## Responsive layout
+
+At viewport widths of 960px and above, the workspace expands to a maximum of
+960px. Separators and Currency Notation sit side by side, and the Thai numeral
+keypad sits beside the input and result. BahtText and Arabic-to-Thai cards keep a
+680px reading width. Smaller screens keep the stacked layout.
+
+Browser checks include widths immediately below and at the desktop breakpoint,
+plus 1280px and 1920px, and verify the placement of the tools and keypad.

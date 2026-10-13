@@ -7,7 +7,7 @@ const assert=require('node:assert/strict');
  if (process.env.BROWSER_EXECUTABLE) launchOptions.executablePath = process.env.BROWSER_EXECUTABLE;
  if (process.env.BROWSER_ARGS) launchOptions.args = JSON.parse(process.env.BROWSER_ARGS);
 
- for(const width of [320,390,800]) for(const theme of ['light','dark']){
+ for(const width of [320,390,800,959,960,1280,1920]) for(const theme of ['light','dark']){
  const browser=await chromium.launch(launchOptions);
   const context=await browser.newContext({viewport:{width,height:900},colorScheme:theme,hasTouch:width<800});
   const page=await context.newPage(); const errors=[]; page.on('pageerror',e=>errors.push(e.message));
@@ -42,8 +42,26 @@ const assert=require('node:assert/strict');
   const sizes=await page.locator('.chip-btn').evaluateAll(els=>els.map(el=>el.getBoundingClientRect().height)); assert(sizes.every(n=>n>=44));
   await page.locator('#thaiInput').fill('ยอด ๑,๒๕๐.๗๕ บาท');
   
+
+  const thaiLayout=await page.evaluate(()=>{
+   const input=document.getElementById('thaiInput').getBoundingClientRect();
+   const keypad=document.querySelector('.palette-grid').getBoundingClientRect();
+   return {input:{x:input.x,right:input.right,bottom:input.bottom},keypad:{x:keypad.x,y:keypad.y}};
+  });
+  if(width>=960) assert(thaiLayout.keypad.x>thaiLayout.input.right);
+  else assert(thaiLayout.keypad.y>=thaiLayout.input.bottom);
   await page.getByRole('button',{name:'123 → ๑๒๓',exact:true}).click(); await page.locator('#arabicInput').fill('Invoice 123 / 50%'); assert.equal(await page.locator('#thaiResult').textContent(),'Invoice ๑๒๓ / ๕๐%');
   await page.getByRole('button',{name:'Number Format',exact:true}).click();
+  const formatLayout=await page.evaluate(()=>{
+   const cards=Array.from(document.querySelectorAll('.format-tools > .card')).map(el=>el.getBoundingClientRect());
+   return {first:{x:cards[0].x,right:cards[0].right,y:cards[0].y,bottom:cards[0].bottom},second:{x:cards[1].x,y:cards[1].y},main:document.querySelector('main').getBoundingClientRect().width};
+  });
+  if(width>=960) {
+   assert(formatLayout.second.x>formatLayout.first.right);
+   assert(Math.abs(formatLayout.first.y-formatLayout.second.y)<1);
+   assert(formatLayout.main>900 && formatLayout.main<=960);
+  } else assert(formatLayout.second.y>=formatLayout.first.bottom);
+
   await page.locator('#separatorInput').fill('๑๒๓๔๕๖๗.๕๐'); assert.equal(await page.locator('#separatorResult').textContent(),'๑,๒๓๔,๕๖๗.๕๐');
   await page.locator('label[for=separatorCommas]').click(); assert.equal(await page.locator('#separatorResult').textContent(),'๑๒๓๔๕๖๗.๕๐');
   const toggle=page.getByRole('switch',{name:'Use commas',exact:true}); await toggle.focus(); await toggle.press('Space'); assert.equal(await toggle.isChecked(),true); assert.equal(await page.locator('#separatorResult').textContent(),'๑,๒๓๔,๕๖๗.๕๐'); await toggle.press('Space');
