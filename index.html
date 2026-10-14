@@ -13,6 +13,7 @@
     <!-- Emoji Favicon (Thai Number Nine: ๙) -->
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>๙</text></svg>">
     
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:FILL,GRAD,opsz,wght@0,0,20,400&amp;icon_names=dark_mode,light_mode,payments,space_bar&amp;display=block" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -20,8 +21,8 @@
     <!-- Header & Theme Toggle -->
     <header>
         <h1>🇹🇭 Thai Numeral & Currency Converter</h1>
-        <button onclick="toggleDarkMode()" class="theme-btn" aria-label="Toggle light or dark theme">
-            <span id="themeIcon">🌙</span>
+        <button id="themeToggle" type="button" onclick="toggleDarkMode()" class="theme-btn" aria-label="Switch to dark theme" title="Switch to dark theme">
+            <span id="themeIcon" class="material-symbols-outlined theme-icon" aria-hidden="true">dark_mode</span>
         </button>
     </header>
 
@@ -123,7 +124,7 @@
         <div id="numberFormatTab" class="tab-content">
             <div class="format-tools">
                 <section class="card" aria-labelledby="separatorHeading">
-                    <h2 id="separatorHeading" class="tool-heading">Separators</h2>
+                    <h2 id="separatorHeading" class="tool-heading"><span class="material-symbols-outlined tool-icon" aria-hidden="true">space_bar</span>Separators</h2>
                     <label for="separatorInput">Number · Thai or Arabic digits</label>
                     <input type="text" id="separatorInput" inputmode="decimal" placeholder="1234567.50 or ๑๒๓๔๕๖๗.๕๐"
                         oninput="updateSeparators()">
@@ -143,7 +144,7 @@
                 </section>
 
                 <section class="card" aria-labelledby="currencyHeading">
-                    <h2 id="currencyHeading" class="tool-heading">Currency Notation</h2>
+                    <h2 id="currencyHeading" class="tool-heading"><span class="material-symbols-outlined tool-icon" aria-hidden="true">payments</span>Currency Notation</h2>
                     <label for="currencyInput">Amount · with or without a currency</label>
                     <input type="text" id="currencyInput" placeholder="US$1,234.50"
                         oninput="updateCurrencyFormat()">
