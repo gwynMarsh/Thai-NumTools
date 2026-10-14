@@ -12,18 +12,26 @@ function switchTab(tabId, btnElement) {
 }
 
 // --- Native Dark Mode Handler ---
+function updateThemeToggle() {
+    const isDark = document.documentElement.classList.contains('dark');
+    const label = isDark ? 'Switch to light theme' : 'Switch to dark theme';
+    document.getElementById('themeIcon').textContent = isDark ? 'light_mode' : 'dark_mode';
+    const button = document.getElementById('themeToggle');
+    button.setAttribute('aria-label', label);
+    button.title = label;
+}
+
 function toggleDarkMode() {
     const html = document.documentElement;
     html.classList.toggle('dark');
-    const isDark = html.classList.contains('dark');
-    document.getElementById('themeIcon').textContent = isDark ? '☀️' : '🌙';
-    localStorage.setItem('theme', isDark ? 'dark' : 'light');
+    updateThemeToggle();
+    localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
 }
 
 if (localStorage.getItem('theme') === 'dark' || (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
     document.documentElement.classList.add('dark');
-    document.getElementById('themeIcon').textContent = '☀️';
 }
+updateThemeToggle();
 
 // --- Clipboard Operations ---
 function copyToClipboard(elementId, btnElement) {
