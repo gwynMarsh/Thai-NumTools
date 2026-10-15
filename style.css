@@ -104,6 +104,13 @@
         }
         .material-symbols-outlined.theme-icon { display: block; font-size: 26px; }
         .tool-icon { flex: 0 0 auto; color: var(--primary); }
+        .material-symbols-outlined.button-icon {
+            flex: 0 0 auto;
+            width: 20px;
+            height: 20px;
+            font-size: 20px;
+            color: currentColor;
+        }
 
         main {
             width: 100%;
@@ -186,12 +193,18 @@
         }
 
         .action-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.375rem;
+            min-width: 6.5rem;
+            line-height: 1.25;
             background-color: var(--input-bg);
             border: 1px solid var(--border-color);
             color: var(--text-main);
             padding: 0.4rem 0.75rem;
             border-radius: 10px;
-            font-size: 0.75rem;
+            font-size: 0.875rem;
             font-weight: 600;
             cursor: pointer;
             font-family: inherit;
@@ -221,6 +234,7 @@
 
         .chip-actions-group {
             display: flex;
+            flex-wrap: wrap;
             align-items: center;
             gap: 0.4rem;
         }

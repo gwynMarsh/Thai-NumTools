@@ -46,7 +46,7 @@ function copyToClipboard(elementId, btnElement) {
             const originalHTML = btnElement.innerHTML;
             btnElement.disabled = true;
             btnElement.innerHTML =
-                '<span class="material-symbols-outlined tool-icon" aria-hidden="true">check</span> Copied!';
+                '<span class="material-symbols-outlined button-icon" aria-hidden="true">check</span> Copied!';
 
             setTimeout(() => {
                 btnElement.innerHTML = originalHTML;
