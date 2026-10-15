@@ -41,7 +41,7 @@ function copyToClipboard(elementId, btnElement) {
     Promise.resolve().then(() => navigator.clipboard.writeText(textToCopy)).then(() => {
         document.getElementById("clipboardStatus").textContent = "";
         const originalText = btnElement.textContent;
-        btnElement.textContent = "✅ Copied!";
+        btnElement.textContent = "<span class="material-symbols-outlined tool-icon" aria-hidden="true">check</span> Copied!";
         setTimeout(() => {
             btnElement.textContent = originalText;
         }, 1500);
