@@ -38,17 +38,25 @@ function copyToClipboard(elementId, btnElement) {
     const textToCopy = document.getElementById(elementId).textContent;
     if (!textToCopy || textToCopy === "---") return;
 
-    Promise.resolve().then(() => navigator.clipboard.writeText(textToCopy)).then(() => {
-        document.getElementById("clipboardStatus").textContent = "";
-        const originalText = btnElement.textContent;
-        btnElement.textContent = "<span class="material-symbols-outlined tool-icon" aria-hidden="true">check</span> Copied!";
-        setTimeout(() => {
-            btnElement.textContent = originalText;
-        }, 1500);
-    }).catch(() => {
-        document.getElementById("clipboardStatus").textContent =
-            "Copy failed. Select the result and use your device’s Copy command.";
-    });
+    Promise.resolve()
+        .then(() => navigator.clipboard.writeText(textToCopy))
+        .then(() => {
+            document.getElementById("clipboardStatus").textContent = "";
+
+            const originalHTML = btnElement.innerHTML;
+            btnElement.disabled = true;
+            btnElement.innerHTML =
+                '<span class="material-symbols-outlined tool-icon" aria-hidden="true">check</span> Copied!';
+
+            setTimeout(() => {
+                btnElement.innerHTML = originalHTML;
+                btnElement.disabled = false;
+            }, 1500);
+        })
+        .catch(() => {
+            document.getElementById("clipboardStatus").textContent =
+                "Copy failed. Select the result and use your device’s Copy command.";
+        });
 }
 
 async function pasteFromClipboard() {
