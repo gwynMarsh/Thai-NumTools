@@ -12,7 +12,7 @@
     
     <!-- Emoji Favicon (Thai Number Nine: ๙) -->
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>๙</text></svg>">    
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:FILL,GRAD,opsz,wght@0,0,20,400&amp;icon_names=currency_exchange,dark_mode,light_mode,universal_currency_alt,pin&amp;display=block" rel="stylesheet">    
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:FILL,GRAD,opsz,wght@0,0,20,400&amp;icon_names=currency_exchange,dark_mode,light_mode,universal_currency_alt,pin,arrow_right_alt&amp;display=block" rel="stylesheet">    
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -45,7 +45,7 @@
                     <span class="result-label">Thai Baht Text:</span>
                     <div class="result-row">
                         <div id="bahtResult" class="result-value" lang="th">หนึ่งพันสองร้อยห้าสิบบาทเจ็ดสิบห้าสตางค์</div>
-                        <button onclick="copyToClipboard('bahtResult', this)" class="action-btn">📋 Copy</button>
+                        <button onclick="copyToClipboard('bahtResult', this)" class="action-btn"><span class="material-symbols-outlined tool-icon" aria-hidden="true">content_copy</span> Copy</button>
                     </div>
                 </div>
             </div>
@@ -98,7 +98,7 @@
                     <span class="result-label">Arabic Numerals:</span>
                     <div class="result-row">
                         <div id="arabicResult" class="result-value">0</div>
-                        <button onclick="copyToClipboard('arabicResult', this)" class="action-btn">📋 Copy</button>
+                        <button onclick="copyToClipboard('arabicResult', this)" class="action-btn"><span class="material-symbols-outlined tool-icon" aria-hidden="true">content_copy</span> Copy</button>
                     </div>
                 </div>
             </div>
@@ -114,7 +114,7 @@
                     <span class="result-label">Thai Numeral Result:</span>
                     <div class="result-row">
                         <div id="thaiResult" class="result-value">๒๕๖๙</div>
-                        <button onclick="copyToClipboard('thaiResult', this)" class="action-btn">📋 Copy</button>
+                        <button onclick="copyToClipboard('thaiResult', this)" class="action-btn"><span class="material-symbols-outlined tool-icon" aria-hidden="true">content_copy</span> Copy</button>
                     </div>
                 </div>
             </div>
@@ -137,7 +137,7 @@
                     </div>
                     <div class="result-row">
                         <output id="separatorResult" class="result-value" for="separatorInput separatorCommas">---</output>
-                        <button id="separatorCopy" onclick="copyToClipboard('separatorResult', this)" class="action-btn" disabled>📋 Copy</button>
+                        <button id="separatorCopy" onclick="copyToClipboard('separatorResult', this)" class="action-btn" disabled><span class="material-symbols-outlined tool-icon" aria-hidden="true">content_copy</span>Copy</button>
                     </div>
                     <p id="separatorStatus" class="format-status" role="status"></p>
                 </section>
@@ -206,7 +206,7 @@
                     </div>
                     <div class="result-row">
                         <output id="currencyResult" class="result-value" for="currencyInput currencySelect currencyStyle">---</output>
-                        <button id="currencyCopy" onclick="copyToClipboard('currencyResult', this)" class="action-btn" disabled>📋 Copy</button>
+                        <button id="currencyCopy" onclick="copyToClipboard('currencyResult', this)" class="action-btn" disabled><span class="material-symbols-outlined tool-icon" aria-hidden="true">content_copy</span> Copy</button>
                     </div>
                     <p id="currencyStatus" class="format-status" role="status"></p>
                     <p id="currencyRounding" class="format-status rounding-notice" role="status"></p>
