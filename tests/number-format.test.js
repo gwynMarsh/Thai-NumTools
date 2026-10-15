@@ -105,7 +105,86 @@ test("registry validates codes and alias conflicts", () => {
     assert.equal(validateCurrencies(CURRENCIES), true);
     assert.throws(() => validateCurrencies([...CURRENCIES, CURRENCIES[0]]), /duplicate/);
     assert.throws(() => validateCurrencies([...CURRENCIES, {
-        code: "NZD", name: "New Zealand dollar", thaiName: "ดอลลาร์นิวซีแลนด์",
-        symbol: "NZ$", aliases: ["NZD", "USD"], locale: "en-NZ", decimalPlaces: 2,
+        code: "XXX", name: "Test currency", thaiName: "ดอลลาร์นิวซีแลนด์",
+        symbol: "NZ$", aliases: ["XXX", "USD"], locale: "en-NZ", decimalPlaces: 2,
     }]), /Conflicting/);
+});
+
+const addedCurrencyCodes = ["KRW","IDR","MYR","PHP","INR","SEK","ZAR","TWD","NZD","DKK","NOK","TRY","MXN"];
+
+test("new currencies support every output style, precision and digit option", () => {
+    for (const code of addedCurrencyCodes) {
+        const currency = tools.currencyByCode(code);
+        assert.ok(currency, code);
+        assert.equal(currency.decimalPlaces, code === "KRW" ? 0 : 2, code);
+        for (const style of ["thai", "code", "symbol", "regional"]) {
+            for (const precision of ["preserve", "currency", "custom"]) {
+                for (const digits of ["arabic", "thai", "preserve"]) {
+                    const result = tools.formatCurrency("1234567.505", {
+                        currency: code, style, precision, decimalPlaces: 3, digits
+                    });
+                    assert.equal(result.currency, code);
+                    assert.ok(result.output);
+                    if (digits === "thai") assert.doesNotMatch(result.output, /[0-9]/);
+                    if (precision === "preserve" || precision === "custom") assert.equal(result.rounded, false);
+                }
+            }
+        }
+        for (const alias of currency.aliases) {
+            assert.equal(tools.detectCurrency(alias + "1234.50").code, code, alias);
+            assert.equal(tools.detectCurrency("1234.50 " + alias).code, code, alias);
+        }
+        assert.equal(tools.formatCurrency("1234.50", {currency: code, style: "code"}).output, code + " 1,234.50");
+        assert.equal(tools.formatCurrency("๑๒๓๔.๕๐", {currency: code, digits: "preserve"}).output,
+            "๑,๒๓๔.๕๐ " + currency.thaiName);
+    }
+});
+
+test("regional currency defaults match native Intl placement and separators", () => {
+    for (const code of addedCurrencyCodes) {
+        const currency = tools.currencyByCode(code);
+        for (const value of ["1234567.5", "-1234567.5", "+1234567.5"]) {
+            const actual = tools.formatCurrency(value, {
+                currency: code, style: "regional", precision: "currency"
+            }).output;
+            const expected = new Intl.NumberFormat(currency.locale, {
+                numberingSystem: "latn", style: "currency", currency: code,
+                minimumFractionDigits: currency.decimalPlaces, maximumFractionDigits: currency.decimalPlaces,
+                signDisplay: value.startsWith("+") ? "always" : "auto"
+            }).format(Number(value));
+            assert.equal(actual, expected, code + " " + value);
+            assert.equal(tools.formatCurrency(actual, {
+                currency: code, inputFormat: "regional", style: "code", precision: "currency"
+            }).currency, code);
+        }
+    }
+});
+
+test("Indian regional grouping and Indonesian decimal commas are explicit", () => {
+    assert.equal(tools.formatCurrency("INR 1234567.50", {style: "regional"}).output, "₹12,34,567.50");
+    assert.equal(tools.formatCurrency("₹12,34,567.50", {inputFormat: "regional", style: "code"}).output,
+        "INR 1,234,567.50");
+    assert.throws(() => tools.formatCurrency("INR 1,234,567.50", {inputFormat: "regional"}), /grouping/);
+    assert.equal(tools.formatCurrency("Rp1.234.567,50", {inputFormat: "regional", style: "code"}).output,
+        "IDR 1,234,567.50");
+    assert.equal(tools.formatCurrency("IDR 1.234,50", {inputFormat: "commaDecimal", style: "code"}).output,
+        "IDR 1,234.50");
+});
+
+test("won precision rounds only when requested and large values stay exact", () => {
+    assert.equal(tools.formatCurrency("KRW 1234.50", {style: "regional"}).output, "₩1,234.50");
+    assert.equal(tools.formatCurrency("KRW 1234.50", {style: "regional", precision: "currency"}).output, "₩1,235");
+    assert.equal(tools.formatCurrency("INR 900719925474099312345.123456789", {style: "regional"}).output,
+        "₹90,07,19,92,54,74,09,93,12,345.123456789");
+});
+
+test("shared dollar and Scandinavian krone signs require selection", () => {
+    for (const token of ["$", "kr"]) assert.throws(() => tools.detectCurrency(token + "1234"), /shared/);
+    for (const code of ["SEK", "DKK", "NOK"]) {
+        assert.equal(tools.detectCurrency("1234 kr", code).code, code);
+    }
+    for (const code of ["TWD", "NZD", "MXN"]) {
+        assert.equal(tools.detectCurrency("$1234", code).code, code);
+    }
+    assert.throws(() => tools.detectCurrency("kr1234", "USD"), /does not match/);
 });
