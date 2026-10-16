@@ -80,7 +80,8 @@ const CustomSelect = (() => {
         if (!active) return;
         panel.replaceChildren();
         panel.setAttribute("aria-labelledby", active.labelId);
-        for (const { option, index } of available(active.select)) {
+        const options = available(active.select);
+        for (const { option, index } of options) {
             const node = document.createElement("div");
             node.id = active.select.id + "Option" + index;
             node.className = "select-option";
@@ -96,7 +97,7 @@ const CustomSelect = (() => {
             node.append(text, check);
             panel.appendChild(node);
         }
-        const indices = available(active.select).map(item => item.index);
+        const indices = options.map(item => item.index);
         if (!indices.includes(activeIndex)) activeIndex = indices.includes(active.select.selectedIndex)
             ? active.select.selectedIndex : indices[0];
         position();

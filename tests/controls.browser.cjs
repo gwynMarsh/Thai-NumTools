@@ -29,13 +29,13 @@ const assert=require('node:assert/strict');
   assert.equal(await page.locator('#arabicResult').textContent(),'ยอด 12 บาท\nVAT 7% — ✅');
   await page.locator('#thaiInput').evaluate(el=>el.setSelectionRange(5,5));
   await page.locator('.chip-btn').first().click(); assert.equal(await page.locator('#thaiInput').inputValue(),'ยอด ๑๑๒ บาท\nVAT 7% — ✅');
-  await page.getByRole('button',{name:'❌ Delete',exact:true}).click(); assert.equal(await page.locator('#thaiInput').inputValue(),'ยอด ๑๒ บาท\nVAT 7% — ✅');
+  await page.getByRole('button',{name:'Delete',exact:true}).click(); assert.equal(await page.locator('#thaiInput').inputValue(),'ยอด ๑๒ บาท\nVAT 7% — ✅');
   await page.locator('#thaiInput').evaluate(el=>el.setSelectionRange(4,6)); await page.locator('.chip-btn').nth(1).click(); assert.equal(await page.locator('#thaiInput').inputValue(),'ยอด ๒ บาท\nVAT 7% — ✅');
   await page.evaluate(()=>{Object.defineProperty(navigator,'clipboard',{configurable:true,value:{readText:async()=> ' เลข ๙',writeText:async t=>window.copied=t}})});
-  await page.getByRole('button',{name:'📋 Paste',exact:true}).click(); assert.equal(await page.locator('#thaiInput').inputValue(),'ยอด ๒ เลข ๙ บาท\nVAT 7% — ✅');
+  await page.getByRole('button',{name:'Paste',exact:true}).click(); assert.equal(await page.locator('#thaiInput').inputValue(),'ยอด ๒ เลข ๙ บาท\nVAT 7% — ✅');
   await page.locator('#thaiToArabicTab .action-btn').last().click(); assert.equal(await page.evaluate(()=>window.copied),'ยอด 2 เลข 9 บาท\nVAT 7% — ✅');
   await page.evaluate(()=>{navigator.clipboard.readText=async()=>{throw Error('denied')}});
-  await page.getByRole('button',{name:'📋 Paste',exact:true}).click(); assert.match(await page.locator('#pasteStatus').textContent(),/Paste into/);
+  await page.getByRole('button',{name:'Paste',exact:true}).click(); assert.match(await page.locator('#pasteStatus').textContent(),/Paste into/);
   await page.getByRole('button',{name:'Clear',exact:true}).click(); assert.equal(await page.locator('#arabicResult').textContent(),'---');
   await page.locator('#thaiInput').fill('ราคา ๑๒๓๔๕๖๗๘๙๐'.repeat(30));
   assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));
@@ -103,7 +103,7 @@ const assert=require('node:assert/strict');
    await currencyButton.press('Escape');
   }
 
-  await page.getByRole('button',{name:'Toggle light or dark theme'}).click();
+  await page.locator('#themeToggle').click();
   assert.equal(await page.evaluate(()=>localStorage.getItem('theme')),theme==='light'?'dark':'light');
   assert.deepEqual(errors,[]); console.log('PASS browser '+width+'px '+theme); await browser.close();
  }
