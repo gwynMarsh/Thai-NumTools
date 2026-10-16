@@ -186,9 +186,12 @@
             line-height: 1.3;
             flex-grow: 1;
 
+            min-width: 0;
+            white-space: pre-wrap;
+
             /* Dictionary Line-Breaking Rules */
             word-break: normal;        /* Disables aggressive character-level splitting */
-            overflow-wrap: break-word; /* Wraps long text gracefully without overflowing */
+            overflow-wrap: anywhere; /* Wraps long text, including unbroken numbers */
             line-break: strict;        /* Enforces strict OS/browser dictionary rules for CJK and Thai */
         }
 
@@ -230,6 +233,8 @@
             justify-content: space-between;
             align-items: center;
             margin-bottom: 0.5rem;
+            flex-wrap: wrap;
+            gap: 0.5rem;
         }
 
         .chip-actions-group {
@@ -254,8 +259,6 @@
         }
 
 
-
-
         /* Numpad Grid Layout */
         .palette-grid {
             display: grid;
@@ -268,6 +271,7 @@
 
         /* Rounded square numeral keys */
         .chip-btn {
+            min-height: 44px;
             width: 100%;
             aspect-ratio: 1 / 1;
             border-radius: 12px;
@@ -296,9 +300,9 @@
         }
 
         .chip-sub {
-            font-size: 9px;
+            font-size: 11px;
             font-weight: 400;
-            opacity: 0.75;
+            opacity: 1;
             margin-top: 1px;
             line-height: 1;
         }
@@ -372,12 +376,8 @@
         :root { color-scheme: light; }
         textarea { resize: vertical; min-height: 100px; line-height: 1.6; margin-bottom: 0.25rem; }
         .status-text { color: var(--text-muted); font-size: 0.8rem; margin-bottom: 1rem; }
-        .chip-btn { min-height: 44px; }
-        .chip-sub { font-size: 11px; opacity: 1; }
-        .result-value { min-width: 0; overflow-wrap: anywhere; white-space: pre-wrap; }
         button:focus-visible { outline: 2px solid var(--primary); outline-offset: 3px; }
         .action-btn, .clear-btn, .tab-btn, .theme-btn { min-height: 44px; }
-        .chip-display-header { flex-wrap: wrap; gap: 0.5rem; }
         @media (prefers-reduced-motion: reduce) {
             *, *::before, *::after { transition: none !important; }
         }
@@ -416,7 +416,6 @@
             .format-controls { grid-template-columns: 1fr; }
         }
         @media (max-width: 380px) {
-            .format-controls { grid-template-columns: 1fr; }
             .palette-grid { gap: 0.4rem; }
             #numberFormatTab input { font-size: 1.15rem; }
         }

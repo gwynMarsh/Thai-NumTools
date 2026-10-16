@@ -10,6 +10,8 @@ function loadApp() {
     function element(id) {
         return elements[id] ||= {
             value: "", textContent: "", selectionStart: 0, selectionEnd: 0,
+            attributes: {},
+            setAttribute(name, value) { this.attributes[name] = value; },
             focus() { this.focused = true; },
             setRangeText(text, start, end) {
                 this.value = this.value.slice(0, start) + text + this.value.slice(end);

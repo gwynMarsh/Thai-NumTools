@@ -9,8 +9,7 @@ function arabicToThai(text) {
 function bahtText(numInput) {
     if (numInput === null || numInput === undefined || numInput === "") return "---";
 
-    let cleanInput = String(numInput).replace(/[๐-๙]/g, char => String(THAI_DIGITS.indexOf(char)));
-    cleanInput = cleanInput.trim();
+    let cleanInput = thaiToArabic(numInput).trim();
 
     // Validate the entire amount; never accept a numeric prefix of invalid text.
     if (!/^[+-]?(?:(?:\d+|\d{1,3}(?:,\d{3})+)(?:\.\d*)?|\.\d+)$/.test(cleanInput)) return "---";
@@ -62,18 +61,16 @@ function bahtText(numInput) {
             const chunk = remaining.substring(remaining.length - 6);
             remaining = remaining.substring(0, remaining.length - 6);
             result = convertSegment(chunk, true) + result;
-            if (remaining.length > 0) {
-                result = "ล้าน" + result;
-            }
+            result = "ล้าน" + result;
         }
         result = convertSegment(remaining) + result;
         return result;
     }
 
-    let bahtResult = convertInteger(integerPart);
+    const bahtResult = convertInteger(integerPart);
     let satangResult = "";
 
-    if (decimalPart && decimalPart !== "00") {
+    if (decimalPart !== "00") {
         satangResult = convertSegment(decimalPart) + "สตางค์";
     }
 

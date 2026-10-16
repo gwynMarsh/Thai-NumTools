@@ -28,7 +28,8 @@ function toggleDarkMode() {
     localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
 }
 
-if (localStorage.getItem('theme') === 'dark' || (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+const savedTheme = localStorage.getItem('theme');
+if (savedTheme === 'dark' || (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
     document.documentElement.classList.add('dark');
 }
 updateThemeToggle();
